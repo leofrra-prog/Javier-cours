@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cours Complet : Histoire du Racisme, Nationalisme & Mondialisation</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #e74c3c;
+            --highlight: #f1c40f;
+            --light-bg: #ecf0f1;
+            --text: #333;
+            --card-bg: #fff;
+            --btn-hover: #34495e;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: var(--primary);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            padding: 10px 0;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .tab-btn {
+            background: none;
+            border: 2px solid transparent;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .tab-btn:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        .tab-btn.active {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        /* Contenu principal */
+        .content-container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            min-height: 80vh;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Styles du Cours */
+        h1 { color: var(--primary); text-align: center; border-bottom: 3px solid var(--accent); padding-bottom: 10px; }
+        h2 { color: var(--accent); margin-top: 40px; border-left: 5px solid var(--primary); padding-left: 15px; }
+        h3 { color: var(--primary); margin-top: 25px; }
+        
+        .concept-box {
+            background-color: #e8f6f3;
+            border-left: 5px solid #1abc9c;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .author-tag {
+            background-color: var(--primary);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .definition {
+            font-style: italic;
+            color: #555;
+            background: #fff3cd;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+
+        /* Styles de la Carte Mentale */
+        .mindmap-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .mm-node {
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            padding: 15px;
+            margin-left: 20px;
+            position: relative;
+            background: white;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .mm-node:hover {
+            transform: translateX(5px);
+            background: #fdfdfd;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+        }
+        .mm-root {
+            background-color: var(--primary);
+            color: white;
+            font-size: 1.3em;
+            text-align: center;
+            margin-left: 0;
+        }
+        .mm-l1 { border-color: var(--accent); margin-left: 20px; font-weight: bold; }
+        .mm-l2 { border-color: #3498db; margin-left: 50px; font-size: 0.95em; }
+        .mm-l3 { border-color: #27ae60; margin-left: 80px; font-size: 0.9em; font-style: italic; color: #555; }
+
+        /* Styles du QCM */
+        .quiz-question {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+        .options label {
+            display: block;
+            margin: 10px 0;
+            cursor: pointer;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            transition: background 0.2s;
+        }
+        .options label:hover {
+            background: #f0f0f0;
+        }
+        .btn-check {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            font-size: 1.1em;
+            border-radius: 25px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+        }
+        .result {
+            margin-top: 10px;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+        .correct { background-color: #d4edda; color: #155724; }
+        .incorrect { background-color: #f8d7da; color: #721c24; }
+
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-container">
+        <button class="tab-btn active" onclick="openTab('cours')">📚 Le Cours Complet</button>
+        <button class="tab-btn" onclick="openTab('carte')">🧠 Carte Mentale</button>
+        <button class="tab-btn" onclick="openTab('quiz')">✍️ QCM & Révision</button>
+    </div>
+</nav>
+
+<div class="content-container">
+
+    <div id="cours" class="tab-content active">
+        <h1>Histoire du Racisme, Discours Discriminatoires & Communauté Nationale</h1>
+        <p><em>Ce cours est une synthèse exhaustive basée sur 5 modules universitaires couvrant la genèse du racisme, sa biologisation, la mondialisation néolibérale, et les théories anthropologiques de la nation.</em></p>
+
+        <h2>MODULE 1 : Genèse du Racisme (Capitalisme & Colonialité)</h2>
+        
+        <h3>1. De la crise médiévale à l'accumulation</h3>
+        <p>
+            Pour comprendre le racisme moderne, il faut remonter à la fin du Moyen Âge. L'historien <span class="author-tag">Johan Huizinga</span> (<em>L'Automne du Moyen Âge</em>) décrit cette période comme un "crépuscule culturel" marqué par la violence, la peur du chaos et une crise spirituelle. Ce climat prépare le terrain pour le capitalisme.
+        </p>
+        <p>
+            L'économie médiévale tardive repose déjà sur une "guerre comme mode de production" (butins, rançons). Les <strong>Croisades</strong> (XIe-XIIIe s.) inventent un modèle crucial : la guerre peut être sainte et lucrative. C'est le premier laboratoire de la mondialisation chrétienne.
+        </p>
+
+        <h3>2. La Reconquista et la "Pureté de sang"</h3>
+        <div class="concept-box">
+            <strong>Concept Clé : Limpieza de sangre (Pureté de sang)</strong><br>
+            Née en Espagne au XVe siècle, cette idéologie vise à fermer les frontières sociales entre chrétiens, juifs et musulmans. Elle transforme une différence religieuse (convertible) en une différence quasi-biologique (héréditaire).
+        </div>
+        <p>
+            Avant 1492, l'Espagne était un lieu d'hybridations (ex: Le Cid servait des seigneurs chrétiens et musulmans). Avec la fin de la Reconquista et la prise de Grenade, l'Inquisition met en place une logique d'exclusion : expulsion des Juifs, conversion forcée des musulmans. C'est la naissance d'une hiérarchie raciale-religieuse interne à l'Europe.
+        </p>
+
+        <h3>3. 1492 : Le double mouvement fondateur</h3>
+        <p>
+            L'année 1492 marque deux événements simultanés :
+            <ul>
+                <li><strong>Interne :</strong> Purification de l'Europe (expulsions).</li>
+                <li><strong>Externe :</strong> Conquête de l'Amérique ("Découverte").</li>
+            </ul>
+            Les conquistadores appliquent aux Amériques les schémas de la Reconquista : croisade, purification et pillage. C'est le début de ce que <span class="author-tag">Marx</span> appelle l'<strong>Accumulation Primitive</strong> (expropriations, esclavage, pillage).
+        </p>
+        
+        <h3>4. L'Esclavage et la Colonialité du Pouvoir</h3>
+        <p>
+            Lors de la <em>Controverse de Valladolid</em>, une distinction fondamentale se crée : les Indiens ont une âme (à évangéliser, selon Las Casas), mais les Africains sont réduits à des corps-marchandises (à posséder).
+        </p>
+        <p>
+            <span class="author-tag">Aníbal Quijano</span> et <span class="author-tag">Immanuel Wallerstein</span> (théorie du Système-Monde) expliquent que le capitalisme n'est pas né en Europe seule, mais de l'interaction violente Europe/Afrique/Amériques. L'esclavage est l'infrastructure du capitalisme.
+        </p>
+        <p>
+            <span class="author-tag">Silvia Federici</span> (<em>Caliban et la Sorcière</em>) ajoute une dimension essentielle : le genre. La chasse aux sorcières en Europe (domestication des femmes) et l'esclavage en Amérique participent d'une même logique : discipliner les corps pour le travail. Le corps de la femme devient une machine à reproduire la force de travail.
+        </p>
+        <p>
+            <span class="author-tag">Sidney Mintz</span> (<em>Sweetness and Power</em>) utilise l'exemple du <strong>sucre</strong> : produit par des esclaves aux Caraïbes, il devient le carburant bon marché des ouvriers européens. Le sucre relie ainsi physiquement la périphérie (colonies) au centre (Europe).
+        </p>
+
+        <h2>MODULE 2 : La Biologisation du Racisme (XVIIIe - XIXe)</h2>
+
+        <h3>1. Du discours religieux au discours biologique</h3>
+        <p>
+            Au XVIIIe siècle, la justification de la hiérarchie change. On ne parle plus de "païens vs croyants", mais de "Nature". La science naissante va naturaliser la domination.
+        </p>
+        <div class="concept-box">
+            <strong>Tableau des mutations :</strong><br>
+            Ancien Régime Colonial ➔ Nouvel Ordre Scientifique<br>
+            Différence religieuse ➔ Différence biologique (innée)<br>
+            Hiérarchie du travail ➔ Hiérarchie des races<br>
+            Domination morale ➔ Domination naturalisée par la science
+        </div>
+
+        <h3>2. Les Taxonomies Raciales (Les classificateurs)</h3>
+        <ul>
+            <li><span class="author-tag">Carl von Linné</span> (1735) : Il classe l'humanité en 4 races en mélangeant biologie et jugement moral (ex: <em>Afer niger</em> décrit comme "paresseux, gouverné par le caprice").</li>
+            <li><span class="author-tag">Buffon</span> (1749) : Théorie de la dégénérescence. Le climat tempéré (Europe) produit l'homme parfait, les climats tropicaux "ramollissent" et "dégénèrent" l'homme.</li>
+            <li><span class="author-tag">Gobineau</span> (1853, <em>Essai sur l'inégalité des races humaines</em>) : Il théorise la race comme moteur de l'histoire. Sa grande peur est le <strong>métissage</strong>, qui entraîne selon lui la chute des civilisations.</li>
+        </ul>
+
+        <h3>3. La Nationalisation des corps</h3>
+        <p>
+            La nation naissante (XIXe) s'obsède pour sa propre "santé". Le corps des femmes devient un enjeu d'État : elles sont les "matrices de la race". On valorise la mère de famille vertueuse contre la femme indépendante ou la femme colonisée.
+            <span class="author-tag">Elsa Dorlin</span> (<em>La Matrice de la race</em>) montre comment la nation française s'est construite sur cette surveillance médicale et raciale des corps.
+        </p>
+
+        <h3>4. Le Racisme sans Race (XXe siècle)</h3>
+        <p>
+            Après 1945 et la découverte des horreurs nazies, le mot "race" devient tabou. Mais le racisme persiste sous une nouvelle forme : le <strong>différentialisme culturel</strong>. On ne dit plus "inférieur biologiquement", on dit "incompatible culturellement". On racise les problèmes sociaux (ex: parler d'ethnies pour expliquer le chômage).
+        </p>
+
+        <h2>MODULE 3 : Mondialisation et Discours Discriminatoires (1980-2008)</h2>
+
+        <h3>1. La rupture de 1973 et le Néolibéralisme</h3>
+        <p>
+            La crise pétrolière de 1973 et la fin de Bretton-Woods marquent la fin du compromis social d'après-guerre. C'est l'avènement du <strong>Néolibéralisme</strong> (Thatcher/Reagan).
+            <ul>
+                <li><strong>Économie :</strong> Dérégulation, privatisations, ajustements structurels imposés au Sud (FMI/Banque Mondiale).</li>
+                <li><strong>Migrations :</strong> Fermeture des frontières en Europe, création d'une main-d'œuvre immigrée précaire et "fixée" sur place.</li>
+            </ul>
+        </p>
+
+        <h3>2. Les nouvelles idéologies justificatrices</h3>
+        <p>
+            Pour faire accepter les inégalités croissantes, de nouveaux mythes émergent :
+        </p>
+        <ul>
+            <li><strong>La Méritocratie :</strong> "Si tu échoues, c'est ta faute". Disparition des causes structurelles (racisme, classe).</li>
+            <li><strong>La "Top Girl" :</strong> Concept d'<span class="author-tag">Angela McRobbie</span>. La figure de la femme jeune, consommatrice et performante sert à dire "le féminisme est fini, tout est possible", culpabilisant celles qui échouent.</li>
+            <li><strong>La fin de l'Histoire :</strong> <span class="author-tag">Francis Fukuyama</span> (1992) affirme que la démocratie libérale est l'horizon indépassable.</li>
+            <li><strong>Le Choc des Civilisations :</strong> <span class="author-tag">Samuel Huntington</span> (1996) remplace la guerre froide par une guerre culturelle (Occident vs Islam), légitimant les politiques sécuritaires.</li>
+        </ul>
+
+        <h2>MODULE 4 : Parenté, Anthropologie et Communauté Nationale</h2>
+
+        <h3>1. La Parenté comme matrice du "Nous"</h3>
+        <p>
+            Comment une société définit-elle qui est "dedans" et qui est "dehors" ? Le premier modèle est la <strong>parenté</strong> (famille).
+            C'est une construction culturelle, pas juste biologique. L'anthropologie juridique du XIXe siècle a étudié cela pour administrer les colonies :
+            <ul>
+                <li><span class="author-tag">Maine</span> : Passage du "Statut" (société traditionnelle) au "Contrat" (société moderne).</li>
+                <li><span class="author-tag">Bachofen</span> : Théorise un "Matriarcat primitif" (Mutterrecht) qui aurait précédé le Patriarcat.</li>
+                <li><span class="author-tag">McLennan</span> : Étudie le "mariage par capture" comme survivance d'un passé violent.</li>
+            </ul>
+        </p>
+
+        <h3>2. L'Exogamie selon Tylor</h3>
+        <p>
+            <span class="author-tag">Edward Tylor</span> pose un dilemme fondamental des premiers groupes humains : "Se marier dehors ou mourir dehors" (<em>Marry out or die out</em>).
+            L'<strong>exogamie</strong> (obligation d'épouser quelqu'un d'un autre groupe) est le mécanisme qui transforme l'ennemi en parent. C'est la première forme d'alliance politique.
+        </p>
+
+        <h3>3. L'Idéologie selon Geertz</h3>
+        <p>
+            Pour <span class="author-tag">Clifford Geertz</span>, l'idéologie n'est pas juste un mensonge. C'est un <strong>système culturel</strong>, une "carte" qui permet de rendre compréhensible une réalité complexe ou angoissante (ex: utiliser des métaphores familiales pour parler de la Nation).
+        </p>
+
+        <h2>MODULE 5 : Nationalisme et Post-colonialisme</h2>
+
+        <h3>1. La Nation comme construction moderne</h3>
+        <p>
+            Contrairement aux idées reçues, la nation n'est pas ancienne. C'est une invention de la modernité industrielle :
+            <ul>
+                <li><span class="author-tag">Ernest Gellner</span> : Le nationalisme est nécessaire à l'industrie qui a besoin d'une population homogène et éduquée.</li>
+                <li><span class="author-tag">Benedict Anderson</span> : La nation est une <strong>"Communauté imaginée"</strong>. Elle est rendue possible par le "capitalisme de l'imprimé" (journaux, romans) qui crée une temporalité commune.</li>
+                <li><span class="author-tag">Eric Hobsbawm</span> : Parle de <strong>"Traditions inventées"</strong> (ex: le kilt écossais codifié au XIXe) pour légitimer l'État.</li>
+            </ul>
+        </p>
+
+        <h3>2. Critique Post-coloniale et Orientalisme</h3>
+        <p>
+            L'anthropologie et la culture ont servi la domination.
+            <ul>
+                <li><span class="author-tag">Edward Said</span> (<em>L'Orientalisme</em>, 1978) : Montre comment l'Occident a "construit" un Orient fantasmé (mystérieux, sensuel, despotique) pour se définir lui-même comme rationnel et supérieur.</li>
+                <li><span class="author-tag">Gayatri Spivak</span> (<em>Les subalternes peuvent-elles parler ?</em>) : Critique les élites nationalistes qui, après l'indépendance, continuent de réduire au silence les plus pauvres (subalternes).</li>
+                <li><span class="author-tag">Homi Bhabha</span> : Introduit le concept d'<strong>Hybridité</strong>. L'identité n'est jamais pure, elle est toujours un mélange (tiers-espace). Le nationalisme qui cherche la pureté est un leurre.</li>
+                <li><span class="author-tag">Stuart Hall</span> (Cultural Studies) : Analyse la race comme un "signifiant flottant" et le rôle des médias dans la construction du consentement.</li>
+            </ul>
+        </p>
+    </div>
+
+    <div id="carte" class="tab-content">
+        <h1>🧠 Carte Mentale du Cours</h1>
+        <p><em>Cliquez sur les boîtes pour visualiser la structure logique des concepts.</em></p>
+        
+        <div class="mindmap-container">
+            <div class="mm-node mm-root">CONSTRUCTION DES HIÉRARCHIES ET APPARTENANCES</div>
+
+            <div class="mm-node mm-l1">1. RACINES ÉCONOMIQUES (XVe-XVIIe)</div>
+            <div class="mm-node mm-l2">Crise du Moyen Âge (Huizinga) ➔ Besoin d'accumulation</div>
+            <div class="mm-node mm-l2">Reconquista (Espagne) ➔ "Limpieza de Sangre" (Pureté du sang)</div>
+            <div class="mm-node mm-l2">1492 : Conquête & Expulsion</div>
+            <div class="mm-node mm-l3">Système-Monde (Wallerstein) & Accumulation Primitive (Marx)</div>
+            <div class="mm-node mm-l3">Esclavage & Sucre (Mintz, Wolf)</div>
+            <div class="mm-node mm-l3">Contrôle des femmes/Sorcières (Federici)</div>
+
+            <div class="mm-node mm-l1">2. TOURNANT BIOLOGIQUE (XVIIIe-XIXe)</div>
+            <div class="mm-node mm-l2">Naturalisation de l'inégalité (Science remplace Religion)</div>
+            <div class="mm-node mm-l2">Taxonomies Raciales</div>
+            <div class="mm-node mm-l3">Linné (Classification morale), Buffon (Climat), Gobineau (Peur du métissage)</div>
+            <div class="mm-node mm-l2">Nationalisation des corps (Dorlin)</div>
+            <div class="mm-node mm-l3">Mère = Matrice de la race</div>
+
+            <div class="mm-node mm-l1">3. MONDIALISATION NÉOLIBÉRALE (1980-2008)</div>
+            <div class="mm-node mm-l2">Crise de 1973 ➔ Fin du compromis social</div>
+            <div class="mm-node mm-l2">Idéologies Justificatrices</div>
+            <div class="mm-node mm-l3">Méritocratie & Responsabilité individuelle</div>
+            <div class="mm-node mm-l3">"Top Girl" (McRobbie) - Féminisme dévoyé</div>
+            <div class="mm-node mm-l3">Choc des Civilisations (Huntington) vs Fin de l'Histoire (Fukuyama)</div>
+
+            <div class="mm-node mm-l1">4. ANTHROPOLOGIE & NATION</div>
+            <div class="mm-node mm-l2">Parenté comme modèle du "Nous"</div>
+            <div class="mm-node mm-l3">Exogamie (Tylor) : Transformer l'ennemi en parent</div>
+            <div class="mm-node mm-l2">Nationalisme = Construction Moderne</div>
+            <div class="mm-node mm-l3">Gellner (Besoin industriel), Anderson (Communauté imaginée), Hobsbawm (Traditions inventées)</div>
+            <div class="mm-node mm-l2">Critique Post-coloniale</div>
+            <div class="mm-node mm-l3">Said (Orientalisme), Spivak (Subalternes), Bhabha (Hybridité)</div>
+        </div>
+    </div>
+
+    <div id="quiz" class="tab-content">
+        <h1>✍️ QCM de Révision</h1>
+        <p><em>Testez vos connaissances pour vérifier que vous avez bien retenu les concepts clés.</em></p>
+
+        <form id="quiz-form">
+            <div class="quiz-question">
+                <h3>1. Selon Silvia Federici, quel événement en Europe est lié à la mise en place de l'esclavage en Amérique ?</h3>
+                <div class="options">
+                    <label><input type="radio" name="q1" value="a"> La Réforme protestante</label>
+                    <label><input type="radio" name="q1" value="b"> La Chasse aux sorcières</label>
+                    <label><input type="radio" name="q1" value="c"> La Révolution industrielle</label>
+                </div>
+                <div id="res-q1" class="result"></div>
+            </div>
+
+            <div class="quiz-question">
+                <h3>2. Qu'est-ce que la "Limpieza de sangre" en Espagne ?</h3>
+                <div class="options">
+                    <label><input type="radio" name="q2" value="a"> Une technique médicale du Moyen Âge</label>
+                    <label><input type="radio" name="q2" value="b"> Une idéologie de pureté excluant Juifs et Musulmans convertis</label>
+                    <label><input type="radio" name="q2" value="c"> Un rituel de mariage royal</label>
+                </div>
+                <div id="res-q2" class="result"></div>
+            </div>
+
+            <div class="quiz-question">
+                <h3>3. Qui est l'auteur du concept de "Communautés imaginées" ?</h3>
+                <div class="options">
+                    <label><input type="radio" name="q3" value="a"> Benedict Anderson</label>
+                    <label><input type="radio" name="q3" value="b"> Ernest Gellner</label>
+                    <label><input type="radio" name="q3" value="c"> Eric Hobsbawm</label>
+                </div>
+                <div id="res-q3" class="result"></div>
+            </div>
+
+            <div class="quiz-question">
+                <h3>4. Que soutient Edward Said dans son livre "L'Orientalisme" ?</h3>
+                <div class="options">
+                    <label><input type="radio" name="q4" value="a"> L'Orient est supérieur à l'Occident</label>
+                    <label><input type="radio" name="q4" value="b"> L'Orient est une construction discursive de l'Occident pour dominer</label>
+                    <label><input type="radio" name="q4" value="c"> Les études orientales sont purement scientifiques et neutres</label>
+                </div>
+                <div id="res-q4" class="result"></div>
+            </div>
+
+            <div class="quiz-question">
+                <h3>5. Selon Gobineau, quelle est la cause de la chute des civilisations ?</h3>
+                <div class="options">
+                    <label><input type="radio" name="q5" value="a"> La guerre économique</label>
+                    <label><input type="radio" name="q5" value="b"> Le métissage</label>
+                    <label><input type="radio" name="q5" value="c"> Le changement climatique</label>
+                </div>
+                <div id="res-q5" class="result"></div>
+            </div>
+
+            <div class="quiz-question">
+                <h3>6. Quel concept Angela McRobbie utilise-t-elle pour critiquer le néolibéralisme féminin ?</h3>
+                <div class="options">
+                    <label><input type="radio" name="q6" value="a"> The Glass Ceiling</label>
+                    <label><input type="radio" name="q6" value="b"> The Top Girl</label>
+                    <label><input type="radio" name="q6" value="c"> The Working Mum</label>
+                </div>
+                <div id="res-q6" class="result"></div>
+            </div>
+
+            <button type="button" class="btn-check" onclick="checkQuiz()">Vérifier mes réponses</button>
+        </form>
+    </div>
+
+</div>
+
+<script>
+    // Gestion des onglets
+    function openTab(tabName) {
+        var i;
+        var x = document.getElementsByClassName("tab-content");
+        var btns = document.getElementsByClassName("tab-btn");
+        
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none"; 
+            x[i].classList.remove("active");
+        }
+        for (i = 0; i < btns.length; i++) {
+            btns[i].classList.remove("active");
+        }
+
+        document.getElementById(tabName).style.display = "block";
+        document.getElementById(tabName).classList.add("active");
+        
+        // Trouver le bouton correspondant pour le mettre en active
+        // (Approche simplifiée basée sur l'ordre, ou on pourrait passer 'this')
+        if(tabName === 'cours') btns[0].classList.add("active");
+        if(tabName === 'carte') btns[1].classList.add("active");
+        if(tabName === 'quiz') btns[2].classList.add("active");
+    }
+
+    // Logique du QCM
+    function checkQuiz() {
+        const answers = {
+            q1: { val: 'b', expl: "Correct ! Federici lie la domestication des femmes en Europe (chasse aux sorcières) à l'esclavage colonial." },
+            q2: { val: 'b', expl: "Exact. C'est le passage d'une différence religieuse à une différence biologique/raciale." },
+            q3: { val: 'a', expl: "Bravo. Anderson lie la nation au 'print capitalism' qui crée une temporalité commune." },
+            q4: { val: 'b', expl: "Correct. L'Orientalisme est un discours de domination, pas une réalité géographique objective." },
+            q5: { val: 'b', expl: "Oui. Gobineau est obsédé par la 'pureté' et voit le mélange comme une dégénérescence." },
+            q6: { val: 'b', expl: "Exact. La 'Top Girl' incarne la réussite individuelle méritocratique, masquant les inégalités structurelles." }
+        };
+
+        let score = 0;
+        let total = 6;
+
+        for (let q in answers) {
+            let selected = document.querySelector(`input[name="${q}"]:checked`);
+            let resultDiv = document.getElementById(`res-${q}`);
+            
+            resultDiv.style.display = "block";
+            resultDiv.className = "result"; // Reset class
+
+            if (selected && selected.value === answers[q].val) {
+                resultDiv.textContent = "✅ " + answers[q].expl;
+                resultDiv.classList.add("correct");
+                score++;
+            } else {
+                resultDiv.textContent = "❌ Incorrect. " + answers[q].expl;
+                resultDiv.classList.add("incorrect");
+            }
+        }
+        alert(`Votre score : ${score} / ${total}`);
+    }
+</script>
+
+</body>
+</html>
