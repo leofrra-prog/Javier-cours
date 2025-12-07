@@ -7,19 +7,36 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
+            /* Light Mode Variables */
             --primary: #2c3e50;
             --bg: #f0f2f5;
             --card-bg: #ffffff;
             --text: #333333;
+            --text-secondary: #7f8c8d;
+            --nav-bg: rgba(255, 255, 255, 0.95);
+            --nav-border: rgba(0,0,0,0.1);
+            
+            /* Dimensions */
             --nav-height-mobile: 70px;
             --nav-height-desktop: 60px;
             
-            /* Couleurs des Modules */
-            --mod1: #3498db; /* Bleu - Nation & Parenté */
-            --mod2: #9b59b6; /* Violet - Nationalisme & Anthro */
-            --mod3: #2ecc71; /* Vert - Mondialisation */
-            --mod4: #e67e22; /* Orange - Racisme I */
-            --mod5: #e74c3c; /* Rouge - Racisme II */
+            /* Modules Colors */
+            --mod1: #3498db;
+            --mod2: #9b59b6;
+            --mod3: #2ecc71;
+            --mod4: #e67e22;
+            --mod5: #e74c3c;
+        }
+
+        /* Dark Mode Variables */
+        body.dark-mode {
+            --primary: #ecf0f1;
+            --bg: #121212;
+            --card-bg: #1e1e1e;
+            --text: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --nav-bg: rgba(30, 30, 30, 0.95);
+            --nav-border: rgba(255,255,255,0.1);
         }
 
         * {
@@ -33,8 +50,9 @@
             font-family: 'Poppins', sans-serif;
             background-color: var(--bg);
             color: var(--text);
-            padding-bottom: calc(var(--nav-height-mobile) + 20px);
-            padding-top: 20px;
+            padding-bottom: calc(var(--nav-height-mobile) + 30px);
+            padding-top: 60px; /* Space for top header */
+            transition: background-color 0.3s, color 0.3s;
         }
 
         @media (min-width: 768px) {
@@ -44,6 +62,38 @@
             }
         }
 
+        /* --- HEADER & DARK MODE TOGGLE --- */
+        .top-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 900;
+            background: transparent;
+        }
+
+        .theme-toggle {
+            background: var(--card-bg);
+            border: 1px solid var(--nav-border);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        
+        .theme-toggle:active { transform: scale(0.9); }
+        .theme-toggle svg { width: 20px; height: 20px; fill: var(--text); }
+
         /* --- NAVIGATION --- */
         .nav-bar {
             position: fixed;
@@ -51,14 +101,14 @@
             left: 0;
             width: 100%;
             height: var(--nav-height-mobile);
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--nav-bg);
             backdrop-filter: blur(10px);
             display: flex;
             justify-content: space-around;
             align-items: center;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            border-top: 1px solid var(--nav-border);
             z-index: 1000;
-            transition: all 0.3s ease;
+            transition: background 0.3s;
         }
 
         @media (min-width: 768px) {
@@ -68,8 +118,9 @@
                 height: var(--nav-height-desktop);
                 padding: 0 50px;
                 justify-content: center;
-                gap: 50px;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                gap: 60px;
+                border-top: none;
+                border-bottom: 1px solid var(--nav-border);
             }
         }
 
@@ -78,21 +129,34 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: #bdc3c7;
+            color: var(--text-secondary);
             text-decoration: none;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             cursor: pointer;
             transition: color 0.3s;
+            width: 80px;
         }
 
         .nav-item.active {
-            color: var(--primary);
+            color: var(--mod1); /* Active color */
             font-weight: 600;
+        }
+        
+        .nav-item.active svg {
+            fill: var(--mod1);
         }
 
         .nav-icon {
-            font-size: 1.5rem;
-            margin-bottom: 2px;
+            width: 24px;
+            height: 24px;
+            margin-bottom: 4px;
+        }
+        
+        .nav-icon svg {
+            width: 100%;
+            height: 100%;
+            fill: var(--text-secondary);
+            transition: fill 0.3s;
         }
 
         /* --- CONTAINERS --- */
@@ -101,7 +165,7 @@
             margin: 0 auto;
             padding: 0 15px;
             display: none;
-            animation: fadeIn 0.4s ease-in-out;
+            animation: fadeIn 0.3s ease-in-out;
         }
 
         .container.active {
@@ -117,40 +181,35 @@
         h1 {
             font-family: 'Montserrat', sans-serif;
             font-weight: 700;
-            color: var(--primary);
+            color: var(--text);
             margin-bottom: 20px;
             text-align: center;
         }
 
         h2 {
             font-family: 'Montserrat', sans-serif;
-            font-size: 1.2rem;
-            margin-top: 30px;
-            margin-bottom: 15px;
-            padding-bottom: 5px;
-            border-bottom: 3px solid;
-            display: inline-block;
-        }
-
-        strong {
+            font-size: 1.1rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
             font-weight: 700;
         }
 
-        /* --- MODULE COLORS --- */
-        .mod1-text { color: var(--mod1); border-color: var(--mod1); }
-        .mod2-text { color: var(--mod2); border-color: var(--mod2); }
-        .mod3-text { color: var(--mod3); border-color: var(--mod3); }
-        .mod4-text { color: var(--mod4); border-color: var(--mod4); }
-        .mod5-text { color: var(--mod5); border-color: var(--mod5); }
+        /* --- COLORS & TAGS --- */
+        .mod1-text { color: var(--mod1); }
+        .mod2-text { color: var(--mod2); }
+        .mod3-text { color: var(--mod3); }
+        .mod4-text { color: var(--mod4); }
+        .mod5-text { color: var(--mod5); }
 
         .tag {
             display: inline-block;
             padding: 3px 8px;
-            border-radius: 12px;
+            border-radius: 6px;
             font-size: 0.7rem;
             color: white;
             margin-bottom: 5px;
             font-weight: 600;
+            letter-spacing: 0.5px;
         }
         .tag-mod1 { background-color: var(--mod1); }
         .tag-mod2 { background-color: var(--mod2); }
@@ -158,22 +217,18 @@
         .tag-mod4 { background-color: var(--mod4); }
         .tag-mod5 { background-color: var(--mod5); }
 
-        /* --- COURSE STYLES (ACCORDION) --- */
+        /* --- COURS (ACCORDION) --- */
         details {
             background: var(--card-bg);
             margin-bottom: 15px;
             border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             overflow: hidden;
+            border: 1px solid var(--nav-border);
             transition: all 0.3s ease;
         }
 
-        details[open] {
-            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-        }
-
         summary {
-            padding: 20px;
+            padding: 18px 20px;
             cursor: pointer;
             font-weight: 600;
             font-family: 'Montserrat', sans-serif;
@@ -181,79 +236,101 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            color: var(--text);
         }
         
-        summary::-webkit-details-marker {
-            display: none;
-        }
+        summary::-webkit-details-marker { display: none; }
 
         summary::after {
             content: '+';
             font-size: 1.5rem;
+            font-weight: 300;
             transition: transform 0.3s;
         }
 
-        details[open] summary::after {
-            transform: rotate(45deg);
-        }
+        details[open] summary::after { transform: rotate(45deg); }
 
         .course-content {
             padding: 0 20px 20px 20px;
             line-height: 1.6;
             font-size: 0.95rem;
+            color: var(--text);
+            border-top: 1px solid var(--nav-border);
         }
 
-        .course-content ul {
-            padding-left: 20px;
-            margin-top: 10px;
-        }
+        .course-content ul, .course-content ol { padding-left: 20px; margin-top: 10px; }
+        .course-content li { margin-bottom: 8px; }
 
-        .course-content li {
-            margin-bottom: 8px;
-        }
+        /* Borders for modules */
+        .border-mod1 { border-left: 5px solid var(--mod1); }
+        .border-mod2 { border-left: 5px solid var(--mod2); }
+        .border-mod3 { border-left: 5px solid var(--mod3); }
+        .border-mod4 { border-left: 5px solid var(--mod4); }
+        .border-mod5 { border-left: 5px solid var(--mod5); }
 
-        /* --- FILTERS --- */
-        .filters {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding-bottom: 15px;
-            margin-bottom: 10px;
-            scrollbar-width: none;
-        }
-        .filters::-webkit-scrollbar { display: none; }
-
-        .filter-btn {
-            border: none;
-            background: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.85rem;
-            white-space: nowrap;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 2px solid transparent;
-        }
-
-        .filter-btn.active {
-            background: var(--primary);
-            color: white;
-        }
-
-        /* --- FLASHCARDS --- */
-        .flashcard-grid {
+        /* --- FLASHCARDS SELECTION MENU --- */
+        .deck-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
         }
 
-        .flashcard-container {
-            background-color: transparent;
-            height: 200px;
+        .deck-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid var(--nav-border);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+            height: 140px;
+        }
+
+        .deck-card:active { transform: scale(0.96); }
+
+        .deck-icon { font-size: 2rem; margin-bottom: 10px; }
+        .deck-title { font-weight: 700; font-family: 'Montserrat'; font-size: 0.9rem; margin-bottom: 5px; }
+        .deck-count { font-size: 0.75rem; color: var(--text-secondary); }
+
+        /* --- FLASHCARDS PLAYER UI --- */
+        #flashcard-player {
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+        }
+
+        .player-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-family: 'Poppins';
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .flashcard-scene {
+            width: 100%;
+            height: 300px;
             perspective: 1000px;
             cursor: pointer;
+            margin-bottom: 30px;
         }
 
         .flashcard-inner {
@@ -261,28 +338,28 @@
             width: 100%;
             height: 100%;
             text-align: center;
-            transition: transform 0.6s;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             transform-style: preserve-3d;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            border-radius: 15px;
         }
 
-        .flashcard-container.flipped .flashcard-inner {
+        .flashcard-inner.is-flipped {
             transform: rotateY(180deg);
         }
 
-        .flashcard-front, .flashcard-back {
+        .flashcard-face {
             position: absolute;
             width: 100%;
             height: 100%;
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
-            border-radius: 15px;
+            border-radius: 20px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border: 1px solid var(--nav-border);
         }
 
         .flashcard-front {
@@ -291,387 +368,467 @@
         }
 
         .flashcard-back {
-            background-color: var(--primary);
-            color: white;
+            background-color: var(--card-bg); /* Dark mode handled by var */
+            color: var(--text);
             transform: rotateY(180deg);
-            overflow-y: auto;
+            border-top: 5px solid; /* Color injected via JS */
+        }
+        
+        /* Specific dark mode tweak for back of card to ensure contrast */
+        body.dark-mode .flashcard-back {
+            background-color: #2c2c2c;
         }
 
         .flashcard-term {
             font-family: 'Montserrat', sans-serif;
             font-weight: 700;
-            font-size: 1.1rem;
-            margin-top: 10px;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
         }
 
         .flashcard-def {
-            font-size: 0.9rem;
-            line-height: 1.4;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .flashcard-hint {
+            margin-top: 15px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .control-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--nav-border);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: transform 0.1s;
+        }
+        
+        .control-btn:active { transform: scale(0.9); }
+        .control-btn svg { width: 24px; height: 24px; fill: var(--text); }
+
+        .progress-indicator {
+            font-weight: 600;
+            color: var(--text-secondary);
         }
 
         /* --- QCM --- */
         .quiz-card {
             background: var(--card-bg);
-            border-radius: 15px;
+            border-radius: 12px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid var(--nav-border);
         }
 
         .quiz-question {
             font-weight: 600;
             margin-bottom: 15px;
             font-size: 1rem;
-        }
-
-        .quiz-options {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            color: var(--text);
         }
 
         .quiz-option {
-            padding: 12px;
-            border: 2px solid #ecf0f1;
-            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid var(--nav-border);
+            border-radius: 8px;
+            margin-bottom: 8px;
             cursor: pointer;
             transition: all 0.2s;
             font-size: 0.9rem;
+            background: var(--bg);
+            color: var(--text);
         }
 
         .quiz-option:hover {
-            background-color: #f8f9fa;
+            filter: brightness(0.95);
         }
 
         .quiz-option.correct {
-            background-color: #d4edda;
+            background-color: rgba(46, 204, 113, 0.2);
             border-color: #2ecc71;
-            color: #155724;
+            color: #2ecc71;
+            font-weight: 600;
+        }
+        
+        body.dark-mode .quiz-option.correct {
+             color: #2ecc71;
+             background-color: rgba(46, 204, 113, 0.1);
         }
 
         .quiz-option.wrong {
-            background-color: #f8d7da;
+            background-color: rgba(231, 76, 60, 0.2);
             border-color: #e74c3c;
-            color: #721c24;
+            color: #e74c3c;
         }
 
         .quiz-feedback {
             margin-top: 15px;
-            padding: 10px;
-            background-color: #eef2f3;
+            padding: 12px;
+            background-color: var(--bg);
             border-radius: 8px;
             font-size: 0.85rem;
             display: none;
+            border-left: 4px solid;
         }
-
-        /* Specific borders for themes in details/quiz */
-        .border-mod1 { border-left: 5px solid var(--mod1); }
-        .border-mod2 { border-left: 5px solid var(--mod2); }
-        .border-mod3 { border-left: 5px solid var(--mod3); }
-        .border-mod4 { border-left: 5px solid var(--mod4); }
-        .border-mod5 { border-left: 5px solid var(--mod5); }
 
     </style>
 </head>
 <body>
 
+    <div class="top-header">
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Mode sombre">
+            <svg id="moon-icon" viewBox="0 0 24 24"><path d="M12.1,22c-0.3,0-0.6,0-0.9,0c-5.5-0.5-9.8-5.1-9.3-10.7C2.4,5.9,6.7,1.8,12,1.8c0.6,0,1.2,0.1,1.8,0.2c-0.7,0.8-1.1,1.8-1.1,2.9c0,2.3,1.9,4.2,4.2,4.2c1.1,0,2.1-0.4,2.9-1.1c0.1,0.6,0.1,1.2,0.1,1.9C19.9,15.6,16.4,19.1,12.1,22z"/></svg>
+            </button>
+    </div>
+
     <nav class="nav-bar">
-        <a href="#" class="nav-item active" onclick="switchTab('cours', this)">
-            <div class="nav-icon">📚</div>
+        <div class="nav-item active" onclick="switchTab('cours', this)">
+            <div class="nav-icon">
+                <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
+            </div>
             <span>Cours</span>
-        </a>
-        <a href="#" class="nav-item" onclick="switchTab('flashcards', this)">
-            <div class="nav-icon">🔄</div>
+        </div>
+        <div class="nav-item" onclick="switchTab('flashcards', this)">
+            <div class="nav-icon">
+                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm-1 14H5c-.55 0-1-.45-1-1V8c0-.55.45-1 1-1h14c.55 0 1 .45 1 1v9c0 .55-.45 1-1 1z"/></svg>
+            </div>
             <span>Flashcards</span>
-        </a>
-        <a href="#" class="nav-item" onclick="switchTab('qcm', this)">
-            <div class="nav-icon">✅</div>
+        </div>
+        <div class="nav-item" onclick="switchTab('qcm', this)">
+            <div class="nav-icon">
+                <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            </div>
             <span>QCM</span>
-        </a>
+        </div>
     </nav>
 
     <div id="cours" class="container active">
-        <h1>Le Cours</h1>
-        <p style="text-align:center; margin-bottom:20px; font-size:0.9rem; color:#7f8c8d;">Une synthèse exhaustive des 5 modules.</p>
+        <h1>Cours Encyclopédique</h1>
+        <p style="text-align:center; margin-bottom:20px; font-size:0.85rem; color:var(--text-secondary);">Synthèse complète des 5 modules.</p>
 
         <details class="border-mod1">
-            <summary class="mod1-text">Module 1 : La Communauté Nationale & La Parenté</summary>
+            <summary>Module 1 : Nation & Parenté</summary>
             <div class="course-content">
                 <span class="tag tag-mod1">Famille & Nation</span>
-                <p>Ce module explore comment les métaphores familiales ("Mère patrie", "Frères") construisent le sentiment national. L'anthropologie de la parenté est utilisée pour comprendre l'inclusion et l'exclusion.</p>
+                <p>Analyse des métaphores familiales ("Mère patrie", "Frères") dans la construction nationale et usage de l'anthropologie.</p>
                 
                 <h2 class="mod1-text">1. Du Statut au Contrat</h2>
-                <p><strong>Henry Sumner Maine</strong> (<em>Ancient Law</em>, 1861) théorise le passage des sociétés traditionnelles aux sociétés modernes :</p>
+                <p><strong>Henry Sumner Maine</strong> (<em>Ancient Law</em>, 1861) :</p>
                 <ul>
-                    <li><strong>Société de Statut :</strong> L'individu est défini par sa naissance, sa famille, sa caste. Ses droits et devoirs sont figés.</li>
-                    <li><strong>Société de Contrat :</strong> L'individu devient un sujet autonome. Les relations sociales sont basées sur l'accord libre (travail, mariage, propriété). C'est la base de la modernité juridique.</li>
+                    <li><strong>Société de Statut :</strong> Droits définis par la naissance/famille.</li>
+                    <li><strong>Société de Contrat :</strong> Modernité. Individu autonome, relations par accord libre.</li>
                 </ul>
 
                 <h2 class="mod1-text">2. Le Droit Maternel (Mutterrecht)</h2>
-                <p><strong>J.J. Bachofen</strong> théorise une évolution de l'humanité en 3 phases, suggérant que le patriarcat n'est pas "naturel" mais historique :</p>
+                <p><strong>J.J. Bachofen</strong> - Évolution en 3 phases :</p>
                 <ol>
-                    <li><strong>Phase Tellurique :</strong> Promiscuité sexuelle, nomadisme. Pas de règles.</li>
-                    <li><strong>Phase Lunaire (Matriarcat) :</strong> Sédentarisation, invention de l'agriculture. Culte de <strong>Déméter</strong> (fertilité). La mère est l'autorité centrale car la filiation est certaine.</li>
-                    <li><strong>Phase Solaire (Patriarcat) :</strong> Règne de la Loi et de l'Esprit (vs la matière). Culte d'<strong>Apollon</strong>. Victoire du père comme chef de famille et de l'État.</li>
+                    <li><strong>Tellurique :</strong> Promiscuité, nomadisme.</li>
+                    <li><strong>Lunaire (Matriarcat) :</strong> Agriculture, <strong>Déméter</strong>. Autorité maternelle (filiation certaine).</li>
+                    <li><strong>Solaire (Patriarcat) :</strong> Loi, Esprit, <strong>Apollon</strong>. Victoire du père/État.</li>
                 </ol>
 
-                <h2 class="mod1-text">3. Mariage et Exogamie</h2>
-                <p><strong>J.F. McLennan</strong> introduit le concept de <strong>"Mariage par capture"</strong> : une survivance rituelle d'un passé violent où les hommes devaient voler des femmes (manque de femmes dû à l'infanticide féminin).</p>
-                <p><strong>Edward Tylor</strong> pose l'alternative fondamentale de l'histoire humaine : <strong>"Marry out or die out"</strong> (S'allier ou mourir). Il théorise l'<strong>Exogamie</strong> : l'obligation de se marier hors de son groupe.</p>
-                <ul>
-                    <li>Fonction : Transformer l'ennemi en allié (le beau-frère).</li>
-                    <li>Création de réseaux de paix et d'échanges (la base de la société politique).</li>
-                </ul>
+                <h2 class="mod1-text">3. Exogamie</h2>
+                <p><strong>J.F. McLennan</strong> : "Mariage par capture" (survivance rituelle).<br>
+                <strong>Edward Tylor</strong> : <strong>"Marry out or die out"</strong>. L'exogamie transforme l'ennemi en allié (beau-frère).</p>
 
-                <h2 class="mod1-text">4. L'Idéologie comme Culture</h2>
-                <p><strong>Clifford Geertz</strong> définit l'idéologie non pas comme un mensonge, mais comme un <strong>"système culturel"</strong>. C'est une "carte" ou une métaphore (ex: la loi sur le travail comparée à "l'esclavage") qui aide les individus à naviguer dans une réalité sociale complexe et anxiogène.</p>
+                <h2 class="mod1-text">4. Idéologie</h2>
+                <p><strong>Clifford Geertz</strong> : L'idéologie est un <strong>"système culturel"</strong>, une carte pour naviguer dans le réel.</p>
             </div>
         </details>
 
         <details class="border-mod2">
-            <summary class="mod2-text">Module 2 : Nationalisme & Anthropologie</summary>
+            <summary>Module 2 : Nationalisme</summary>
             <div class="course-content">
-                <span class="tag tag-mod2">Construction de la Nation</span>
-                <p>La nation n'est pas une donnée naturelle antique, mais une construction moderne liée à l'État et au capitalisme.</p>
+                <span class="tag tag-mod2">Construction</span>
+                
+                <h2 class="mod2-text">1. Nation Fonctionnelle</h2>
+                <p><strong>Ernest Gellner</strong> : Le nationalisme est un besoin de l'<strong>industrialisation</strong> (culture standardisée par l'école).</p>
 
-                <h2 class="mod2-text">1. La Nation Fonctionnelle</h2>
-                <p><strong>Ernest Gellner</strong> (<em>Nations and Nationalism</em>) : Le nationalisme est une nécessité de l'<strong>industrialisation</strong>.</p>
-                <ul>
-                    <li>L'industrie a besoin d'une main-d'œuvre interchangeable et capable de communiquer.</li>
-                    <li>L'État impose une <strong>haute culture standardisée</strong> via l'école publique et la langue unique.</li>
-                    <li>"Ce n'est pas la nation qui crée le nationalisme, c'est le nationalisme qui crée la nation."</li>
-                </ul>
-
-                <h2 class="mod2-text">2. La Communauté Imaginée</h2>
-                <p><strong>Benedict Anderson</strong> (<em>Imagined Communities</em>) : La nation est une communauté imaginée car ses membres ne se connaîtront jamais tous, mais se sentent liés.</p>
-                <ul>
-                    <li>Rôle clé du <strong>Capitalisme de l'imprimé</strong> (Print Capitalism) : Journaux et romans créent une "temporalité homogène". Les gens lisent les mêmes nouvelles au même moment, créant un lien horizontal.</li>
-                </ul>
+                <h2 class="mod2-text">2. Communauté Imaginée</h2>
+                <p><strong>Benedict Anderson</strong> : La nation est imaginée (liens abstraits). Rôle du <strong>Print Capitalism</strong> (Journaux) pour créer un temps commun.</p>
 
                 <h2 class="mod2-text">3. Traditions Inventées</h2>
-                <p><strong>Eric Hobsbawm</strong> : Les États modernes inventent des traditions (cérémonies, costumes comme le Kilt écossais au XIXe s.) pour se donner une légitimité historique artificielle et cimenter la cohésion sociale face au changement rapide.</p>
+                <p><strong>Eric Hobsbawm</strong> : L'État invente des traditions (ex: Kilt) pour légitimer son pouvoir par une fausse ancienneté.</p>
 
-                <h2 class="mod2-text">4. L'Orientalisme et les Subalternes</h2>
-                <p><strong>Edward Said</strong> (<em>Orientalisme</em>) : L'Orient n'est pas un lieu réel, mais une <strong>fiction discursive</strong> créée par l'Occident pour se définir par contraste (Occident = Rationnel/Masculin vs Orient = Irrationnel/Sensuel/Féminin).</p>
-                <p><strong>Gayatri Spivak</strong> (<em>"Can the Subaltern Speak?"</em>) : Critique des élites nationalistes post-coloniales qui parlent "au nom du peuple" mais continuent d'opprimer les <strong>subalternes</strong> (paysans, femmes pauvres) comme le faisaient les colons.</p>
-                <p><strong>Homi Bhabha</strong> : Concept d'<strong>Hybridité</strong> et de "Tiers-Espace". L'identité coloniale/nationale n'est jamais pure, elle est toujours le fruit d'un mélange et d'une négociation constante.</p>
+                <h2 class="mod2-text">4. Postcolonialisme</h2>
+                <p><strong>Edward Said</strong> (<em>Orientalisme</em>) : L'Orient est une fiction occidentale pour se valoriser.<br>
+                <strong>Gayatri Spivak</strong> : Les élites nationalistes oppriment les <strong>subalternes</strong>.<br>
+                <strong>Homi Bhabha</strong> : <strong>Hybridité</strong> et "Tiers-Espace".</p>
             </div>
         </details>
 
         <details class="border-mod3">
-            <summary class="mod3-text">Module 3 : Mondialisation & Discours Discriminatoires</summary>
+            <summary>Module 3 : Mondialisation (1980-2008)</summary>
             <div class="course-content">
-                <span class="tag tag-mod3">1980-2008</span>
-                <p>Analyse des mutations des discours discriminatoires dans le contexte du néolibéralisme.</p>
+                <span class="tag tag-mod3">Néolibéralisme</span>
+                
+                <h2 class="mod3-text">1. Tournant Néolibéral</h2>
+                <p>Crise de 1973. <strong>Thatcher/Reagan</strong>. Dérégulation. Passage à la "responsabilité individuelle".</p>
 
-                <h2 class="mod3-text">1. Le Tournant Néolibéral</h2>
-                <p>Après la crise de 1973 (choc pétrolier, fin de Bretton-Woods), le compromis social d'après-guerre s'effondre. Arrivée de <strong>Thatcher</strong> ("There is no such thing as society") et <strong>Reagan</strong>.</p>
-                <ul>
-                    <li>Dérégulation, privatisations, recul de l'État.</li>
-                    <li>Passage de la solidarité collective à la <strong>responsabilité individuelle</strong>.</li>
-                </ul>
+                <h2 class="mod3-text">2. Méritocratie</h2>
+                <p>Culpabilisation de l'échec. <strong>Angela McRobbie</strong> : La <strong>"Top Girl"</strong> (femme performante) masque les inégalités structurelles.</p>
 
-                <h2 class="mod3-text">2. La Méritocratie et la "Top Girl"</h2>
-                <p>Le discours méritocratique transforme les inégalités structurelles en échecs personnels ("Si tu es pauvre, c'est ta faute").</p>
-                <p><strong>Angela McRobbie</strong> théorise la figure de la <strong>"Top Girl"</strong> : La jeune femme performante, consommatrice et sexualisée devient le symbole de la réussite néolibérale. Cela sert à dire "L'égalité est atteinte", rendant le féminisme "ringard" et masquant la précarité des femmes de classe populaire/racisées.</p>
-
-                <h2 class="mod3-text">3. Géopolitique et Culture</h2>
-                <p><strong>Francis Fukuyama</strong> (<em>La Fin de l'Histoire</em>, 1992) : Après la chute de l'URSS, il prédit le triomphe définitif et universel de la démocratie libérale et du marché.</p>
-                <p><strong>Samuel Huntington</strong> (<em>Le Choc des Civilisations</em>, 1996) : Réponse pessimiste. Les conflits futurs ne seront plus idéologiques mais <strong>culturels</strong> (Occident vs Islam vs Confucianisme). Ce texte a servi à légitimer des politiques sécuritaires et islamophobes.</p>
+                <h2 class="mod3-text">3. Géopolitique</h2>
+                <p><strong>Francis Fukuyama</strong> : "La Fin de l'Histoire" (Triomphe démocratie libérale).<br>
+                <strong>Samuel Huntington</strong> : "Le Choc des Civilisations" (Conflits culturels).</p>
             </div>
         </details>
 
         <details class="border-mod4">
-            <summary class="mod4-text">Module 4 : Histoire du Racisme I (Capitalisme)</summary>
+            <summary>Module 4 : Racisme & Capitalisme</summary>
             <div class="course-content">
-                <span class="tag tag-mod4">Racisme Économique</span>
-                <p>Thèse centrale : Le racisme naît comme infrastructure économique (pour justifier l'exploitation) avant de devenir une théorie biologique.</p>
+                <span class="tag tag-mod4">Économie</span>
+                <p>Le racisme naît de l'économie (exploitation) avant la biologie.</p>
 
-                <h2 class="mod4-text">1. Les Origines : 1492 et l'Espagne</h2>
-                <p><strong>Johan Huizinga</strong> (<em>L'Automne du Moyen Âge</em>) décrit une époque d'angoisse. Les Croisades inventent la "guerre sainte et lucrative".</p>
-                <p>En 1492 (Chute de Grenade + Amérique), l'Espagne instaure la <strong>Limpieza de Sangre</strong> (Pureté de sang). Exclusion des Juifs et Musulmans convertis non plus sur la foi, mais sur la "souillure" héréditaire. C'est l'ancêtre du racisme biologique.</p>
+                <h2 class="mod4-text">1. Origines</h2>
+                <p><strong>1492</strong> : Fin Reconquista + Amérique. <strong>Limpieza de Sangre</strong> (Espagne) : Exclusion biologique.<br>
+                <strong>Johan Huizinga</strong> : Moyen Âge angoissé, Croisades.</p>
 
-                <h2 class="mod4-text">2. Accumulation et Esclavage</h2>
-                <p><strong>Marx</strong> parle d'<strong>Accumulation Primitive</strong> : Le capitalisme ne naît pas de l'épargne, mais du pillage colonial, de l'esclavage et de l'expropriation (enclosures).</p>
-                <p><strong>Controverse de Valladolid (1550) :</strong> Débat sur l'humanité des Indiens. Las Casas les défend (ils ont une âme à sauver). Résultat ironique : on protège les Indiens... mais on légitime la traite des Noirs africains, perçus comme main-d'œuvre sans âme.</p>
+                <h2 class="mod4-text">2. Accumulation</h2>
+                <p><strong>Marx</strong> : Accumulation Primitive (pillage/esclavage).<br>
+                <strong>Valladolid (1550)</strong> : Indiens ont une âme -> Légitimation esclavage Noirs.</p>
 
-                <h2 class="mod4-text">3. Corps, Sucre et Système-Monde</h2>
-                <p><strong>Silvia Federici</strong> (<em>Caliban et la Sorcière</em>) : La chasse aux sorcières en Europe a servi à briser le pouvoir des femmes et contrôler leur reproduction, parallèlement à l'esclavage en Amérique. C'est la domestication des travailleurs.</p>
-                <p><strong>Sidney Mintz</strong> (<em>La douceur et le pouvoir</em>) : Le sucre produit par les esclaves aux Caraïbes fournit les calories bon marché aux ouvriers industriels anglais. Lien direct entre colonie et industrie.</p>
-                <p><strong>Immanuel Wallerstein</strong> : Théorie du <strong>Système-Monde</strong>. Le monde est divisé en Centre (riche, transformateur) et Périphérie (pauvre, fournisseur de ressources), structure héritée de la colonisation.</p>
+                <h2 class="mod4-text">3. Système-Monde</h2>
+                <p><strong>Silvia Federici</strong> : Chasse aux sorcières = domestication des femmes.<br>
+                <strong>Sidney Mintz</strong> : Le sucre esclave nourrit l'ouvrier anglais.<br>
+                <strong>Wallerstein</strong> : Centre vs Périphérie.</p>
             </div>
         </details>
 
         <details class="border-mod5">
-            <summary class="mod5-text">Module 5 : Histoire du Racisme II (Biologisation)</summary>
+            <summary>Module 5 : Biologisation</summary>
             <div class="course-content">
-                <span class="tag tag-mod5">Racisme Scientifique</span>
-                <p>Aux XVIIIe et XIXe siècles, la Science remplace la Religion pour justifier la domination. On passe de la différence de statut à la différence de nature.</p>
+                <span class="tag tag-mod5">Science</span>
+                <p>XVIIIe-XIXe : La Science justifie la domination.</p>
 
-                <h2 class="mod5-text">1. Les Classificateurs</h2>
-                <p><strong>Carl von Linné</strong> (<em>Systema Naturae</em>) : Classe les humains en 4 races. Mélange description physique et jugement moral (ex: "L'Européen est ingénieux et régi par les lois", "L'Africain est paresseux et régi par l'arbitraire").</p>
-                <p><strong>Buffon</strong> : Théorie de la <strong>dégénérescence</strong>. Le Blanc est la norme originelle ; les autres races sont des dégradations dues aux mauvais climats.</p>
+                <h2 class="mod5-text">1. Classificateurs</h2>
+                <p><strong>Linné</strong> : Hiérarchie morale.<br>
+                <strong>Buffon</strong> : Dégénérescence par le climat (Blanc = norme).</p>
 
-                <h2 class="mod5-text">2. L'Inégalité des Races</h2>
-                <p><strong>Arthur de Gobineau</strong> (<em>Essai sur l'inégalité des races humaines</em>, 1853) : Il ne croit pas au progrès. Il est obsédé par la peur du <strong>Métissage</strong>. Pour lui, les civilisations meurent quand le sang pur est dilué par le mélange avec des races "inférieures".</p>
+                <h2 class="mod5-text">2. Inégalité</h2>
+                <p><strong>Gobineau</strong> : Peur du <strong>Métissage</strong> (mort des civilisations).</p>
 
-                <h2 class="mod5-text">3. La Nation comme Corps</h2>
-                <p><strong>Elsa Dorlin</strong> (<em>La Matrice de la Race</em>) : La nation est conçue comme un corps biologique à protéger contre l'infection (l'étranger). Les femmes sont vues comme les "mères de la nation" dont il faut surveiller la sexualité pour assurer la pureté de la race.</p>
+                <h2 class="mod5-text">3. Corps National</h2>
+                <p><strong>Elsa Dorlin</strong> : Nation = corps à protéger. Femme = mère de la nation.</p>
 
-                <h2 class="mod5-text">4. Le Racisme sans Race (XXe siècle)</h2>
-                <p>Après 1945 et la Shoah, le terme "race" est discrédité biologiquement. Le racisme mute en <strong>différentialisme culturel</strong>. On ne dit plus "Ils sont biologiquement inférieurs", mais "Leurs cultures/valeurs sont incompatibles avec les nôtres". C'est la même fonction d'exclusion avec un nouveau vocabulaire.</p>
+                <h2 class="mod5-text">4. XXe Siècle</h2>
+                <p><strong>Racisme sans race</strong> : Passage au différentialisme culturel ("Cultures incompatibles").</p>
             </div>
         </details>
     </div>
 
     <div id="flashcards" class="container">
-        <h1>Flashcards</h1>
-        
-        <div class="filters" id="flashcard-filters">
-            <button class="filter-btn active" onclick="filterFlashcards('all')">Tout</button>
-            <button class="filter-btn" style="border-color:var(--mod1); color:var(--mod1)" onclick="filterFlashcards(1)">Mod 1</button>
-            <button class="filter-btn" style="border-color:var(--mod2); color:var(--mod2)" onclick="filterFlashcards(2)">Mod 2</button>
-            <button class="filter-btn" style="border-color:var(--mod3); color:var(--mod3)" onclick="filterFlashcards(3)">Mod 3</button>
-            <button class="filter-btn" style="border-color:var(--mod4); color:var(--mod4)" onclick="filterFlashcards(4)">Mod 4</button>
-            <button class="filter-btn" style="border-color:var(--mod5); color:var(--mod5)" onclick="filterFlashcards(5)">Mod 5</button>
+        <div id="deck-selection">
+            <h1>Choisir un Module</h1>
+            <div class="deck-grid">
+                <div class="deck-card" onclick="startDeck(1)" style="border-color: var(--mod1)">
+                    <div class="deck-icon">🏛️</div>
+                    <div class="deck-title" style="color:var(--mod1)">Module 1</div>
+                    <div class="deck-count">Parenté & Nation</div>
+                </div>
+                <div class="deck-card" onclick="startDeck(2)" style="border-color: var(--mod2)">
+                    <div class="deck-icon">🏴</div>
+                    <div class="deck-title" style="color:var(--mod2)">Module 2</div>
+                    <div class="deck-count">Nationalisme</div>
+                </div>
+                <div class="deck-card" onclick="startDeck(3)" style="border-color: var(--mod3)">
+                    <div class="deck-icon">🌍</div>
+                    <div class="deck-title" style="color:var(--mod3)">Module 3</div>
+                    <div class="deck-count">Mondialisation</div>
+                </div>
+                <div class="deck-card" onclick="startDeck(4)" style="border-color: var(--mod4)">
+                    <div class="deck-icon">⛓️</div>
+                    <div class="deck-title" style="color:var(--mod4)">Module 4</div>
+                    <div class="deck-count">Racisme Eco</div>
+                </div>
+                <div class="deck-card" onclick="startDeck(5)" style="border-color: var(--mod5)">
+                    <div class="deck-icon">🧬</div>
+                    <div class="deck-title" style="color:var(--mod5)">Module 5</div>
+                    <div class="deck-count">Biologisation</div>
+                </div>
+                <div class="deck-card" onclick="startDeck('all')" style="border-color: var(--primary)">
+                    <div class="deck-icon">📚</div>
+                    <div class="deck-title">TOUT</div>
+                    <div class="deck-count">Révision Globale</div>
+                </div>
+            </div>
         </div>
 
-        <div class="flashcard-grid" id="flashcard-grid">
+        <div id="flashcard-player">
+            <div class="player-header">
+                <button class="back-btn" onclick="closeDeck()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                    Retour
+                </button>
+                <div class="progress-indicator" id="fc-progress">1 / 20</div>
             </div>
+
+            <div class="flashcard-scene" onclick="flipCard()">
+                <div class="flashcard-inner" id="card-inner">
+                    <div class="flashcard-face flashcard-front">
+                        <span class="tag" id="fc-tag">Mod 1</span>
+                        <div class="flashcard-term" id="fc-term">Terme</div>
+                        <div class="flashcard-hint">Toucher pour retourner</div>
+                    </div>
+                    <div class="flashcard-face flashcard-back">
+                        <div class="flashcard-def" id="fc-def">Définition</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="control-btn" onclick="prevCard()">
+                    <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+                </div>
+                <div class="control-btn" onclick="nextCard()">
+                    <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="qcm" class="container">
-        <h1>QCM</h1>
-        <div class="filters" id="quiz-filters">
-            <button class="filter-btn active" onclick="filterQuiz('all')">Tout</button>
-            <button class="filter-btn" style="border-color:var(--mod1); color:var(--mod1)" onclick="filterQuiz(1)">Mod 1</button>
-            <button class="filter-btn" style="border-color:var(--mod2); color:var(--mod2)" onclick="filterQuiz(2)">Mod 2</button>
-            <button class="filter-btn" style="border-color:var(--mod3); color:var(--mod3)" onclick="filterQuiz(3)">Mod 3</button>
-            <button class="filter-btn" style="border-color:var(--mod4); color:var(--mod4)" onclick="filterQuiz(4)">Mod 4</button>
-            <button class="filter-btn" style="border-color:var(--mod5); color:var(--mod5)" onclick="filterQuiz(5)">Mod 5</button>
-        </div>
+        <h1>Examen Blanc</h1>
+        <p style="text-align:center; margin-bottom:20px; font-size:0.85rem; color:var(--text-secondary);">50 Questions - Sans filtre</p>
+        
         <div id="quiz-list">
             </div>
     </div>
 
     <script>
         // --- DATA ---
-
         const flashcardsData = [
-            // MODULE 1 (20 cartes)
+            // MODULE 1
             { id: 1, mod: 1, term: "Henry Sumner Maine", def: "Auteur de 'Ancient Law' (1861). Théorise le passage de la société de Statut à la société de Contrat." },
             { id: 2, mod: 1, term: "Société de Statut", def: "Société traditionnelle où les droits et devoirs sont déterminés par la naissance et la famille." },
             { id: 3, mod: 1, term: "Société de Contrat", def: "Société moderne où les relations sociales sont basées sur l'accord libre entre individus autonomes." },
             { id: 4, mod: 1, term: "J.J. Bachofen", def: "Théoricien du 'Mutterrecht' (Droit maternel). Propose une évolution en 3 phases (Tellurique, Lunaire, Solaire)." },
-            { id: 5, mod: 1, term: "Phase Tellurique", def: "1ère phase de Bachofen : Nomadisme et promiscuité sexuelle (hétaïrisme). Pas de famille stable." },
-            { id: 6, mod: 1, term: "Phase Lunaire", def: "2ème phase de Bachofen : Agriculture, Matriarcat, culte de Déméter. La mère est l'autorité centrale." },
-            { id: 7, mod: 1, term: "Phase Solaire", def: "3ème phase de Bachofen : Patriarcat, Loi, Rationalité, culte d'Apollon. Victoire de l'esprit sur la matière." },
-            { id: 8, mod: 1, term: "J.F. McLennan", def: "Anthropologue qui introduit le concept de 'Mariage par capture' et l'infanticide féminin comme cause primitive." },
-            { id: 9, mod: 1, term: "Mariage par capture", def: "Rituel symbolique survivant d'un passé où les hommes devaient enlever les femmes d'autres tribus par violence." },
-            { id: 10, mod: 1, term: "Edward Tylor", def: "Auteur de la formule 'Marry out or die out'. Père de la théorie de l'exogamie." },
-            { id: 11, mod: 1, term: "Marry out or die out", def: "Alternative fondamentale de Tylor : s'allier par le mariage avec l'extérieur ou s'entretuer." },
-            { id: 12, mod: 1, term: "Exogamie", def: "Obligation sociale de se marier en dehors de son propre groupe (clan, famille)." },
-            { id: 13, mod: 1, term: "Fonction de l'exogamie", def: "Transformer l'ennemi en allié (beau-frère) et créer des réseaux politiques de paix." },
-            { id: 14, mod: 1, term: "Endogamie", def: "Fait de se marier à l'intérieur de son propre groupe social (souvent interdit ou tabou)." },
-            { id: 15, mod: 1, term: "Clifford Geertz", def: "Anthropologue qui définit l'idéologie comme un 'système culturel' et non juste un mensonge." },
-            { id: 16, mod: 1, term: "Idéologie (selon Geertz)", def: "Une 'carte' ou un système de symboles permettant de donner du sens à une réalité sociale complexe." },
-            { id: 17, mod: 1, term: "Métaphore familiale de la nation", def: "Utilisation de termes de parenté (Mère patrie, Frères) pour créer un sentiment d'appartenance nationale." },
-            { id: 18, mod: 1, term: "L.H. Morgan", def: "Anthropologue évolutionniste ayant influencé Engels, a travaillé sur les systèmes de parenté iroquois." },
-            { id: 19, mod: 1, term: "Filiation matrilinéaire", def: "Système où la transmission du nom, des biens et de l'appartenance passe par la mère." },
-            { id: 20, mod: 1, term: "Fonctionnalisme", def: "Approche (ex: Malinowski) qui étudie à quoi 'sert' une institution (comme la famille) pour la stabilité sociale." },
+            { id: 5, mod: 1, term: "Phase Tellurique", def: "1ère phase de Bachofen : Nomadisme et promiscuité sexuelle. Pas de famille stable." },
+            { id: 6, mod: 1, term: "Phase Lunaire", def: "2ème phase (Bachofen) : Agriculture, Matriarcat, Déméter. Autorité maternelle." },
+            { id: 7, mod: 1, term: "Phase Solaire", def: "3ème phase (Bachofen) : Patriarcat, Loi, Apollon. Victoire de l'esprit sur la matière." },
+            { id: 8, mod: 1, term: "J.F. McLennan", def: "Concept de 'Mariage par capture' (survivance rituelle d'enlèvements réels)." },
+            { id: 9, mod: 1, term: "Edward Tylor", def: "Auteur de 'Marry out or die out'. Père de la théorie de l'exogamie." },
+            { id: 10, mod: 1, term: "Marry out or die out", def: "Alternative de Tylor : s'allier par le mariage avec l'extérieur ou s'entretuer." },
+            { id: 11, mod: 1, term: "Exogamie", def: "Obligation de se marier hors de son groupe. Transforme l'ennemi en allié (beau-frère)." },
+            { id: 12, mod: 1, term: "Clifford Geertz", def: "Définit l'idéologie comme un 'système culturel', une carte pour naviguer dans le réel." },
+            { id: 13, mod: 1, term: "Métaphore familiale", def: "Usage de termes (Mère patrie, Frères) pour créer l'appartenance nationale." },
+            { id: 14, mod: 1, term: "L.H. Morgan", def: "Anthropologue évolutionniste, travaux sur la parenté iroquoise, influence Engels." },
+            { id: 15, mod: 1, term: "Filiation matrilinéaire", def: "Transmission du nom et des biens par la mère." },
+            { id: 16, mod: 1, term: "Endogamie", def: "Se marier dans son propre groupe (souvent interdit)." },
+            { id: 17, mod: 1, term: "Fonctionnalisme", def: "Étudie à quoi 'sert' une institution (famille) pour la stabilité sociale." },
+            { id: 18, mod: 1, term: "Père social vs Biologique", def: "Distinction clé en anthropologie (ex: l'oncle maternel peut être le père social)." },
+            { id: 19, mod: 1, term: "Atome de parenté", def: "Structure de base (Lévi-Strauss) : Frère, Sœur, Père, Fils." },
+            { id: 20, mod: 1, term: "Interdit de l'inceste", def: "Règle universelle forçant l'exogamie." },
 
-            // MODULE 2 (20 cartes)
-            { id: 21, mod: 2, term: "Ernest Gellner", def: "Auteur de 'Nations and Nationalism'. Lie la nation aux besoins de l'industrialisation." },
-            { id: 22, mod: 2, term: "Thèse de Gellner", def: "Le nationalisme crée la nation (et pas l'inverse) pour fournir une main-d'œuvre standardisée à l'industrie." },
-            { id: 23, mod: 2, term: "Benedict Anderson", def: "Auteur de 'Imagined Communities' (1983). La nation est une construction mentale." },
-            { id: 24, mod: 2, term: "Communauté Imaginée", def: "Concept d'Anderson : on ne connaît pas tous les membres de la nation, mais on s'imagine unis." },
-            { id: 25, mod: 2, term: "Capitalisme de l'imprimé", def: "Rôle des journaux et romans dans la création d'une langue et d'une temporalité communes." },
-            { id: 26, mod: 2, term: "Eric Hobsbawm", def: "Historien marxiste. Développe le concept de 'Traditions Inventées'." },
-            { id: 27, mod: 2, term: "Tradition Inventée", def: "Pratique récente (ex: Kilt, défilé du 14 juillet) présentée comme ancienne pour légitimer l'État." },
-            { id: 28, mod: 2, term: "Edward Said", def: "Auteur de 'Orientalisme' (1978). Fondateur des études postcoloniales." },
-            { id: 29, mod: 2, term: "Orientalisme", def: "Construction discursive de l'Occident qui fabrique un Orient imaginaire (irrationnel) pour se valoriser." },
-            { id: 30, mod: 2, term: "Gayatri Spivak", def: "Auteure de 'Can the Subaltern Speak?'. Critique le silence imposé aux groupes marginalisés." },
-            { id: 31, mod: 2, term: "Subalterne", def: "Groupes opprimés (femmes, paysans colonisés) exclus du récit dominant et de la représentation politique." },
-            { id: 32, mod: 2, term: "Homi Bhabha", def: "Théoricien postcolonial. Introduit les concepts d'Hybridité et de Tiers-Espace." },
-            { id: 33, mod: 2, term: "Hybridité", def: "L'idée que les identités coloniales ne sont jamais pures, mais issues d'une négociation constante." },
-            { id: 34, mod: 2, term: "Mimétisme (Mimicry)", def: "Concept de Bhabha : le colonisé imite le colon, créant une ressemblance menaçante et imparfaite." },
-            { id: 35, mod: 2, term: "Haute Culture (Gellner)", def: "Culture lettrée, standardisée par l'école, nécessaire au fonctionnement de l'État-nation moderne." },
-            { id: 36, mod: 2, term: "Monopole de l'éducation", def: "Outil principal de l'État pour fabriquer des citoyens homogènes selon Gellner." },
-            { id: 37, mod: 2, term: "Censo (Anderson)", def: "Le recensement : outil colonial pour classifier et contrôler les populations par catégories rigides." },
-            { id: 38, mod: 2, term: "Carte et Musée (Anderson)", def: "Avec le recensement, ils forment les outils de domination symbolique de l'État colonial." },
-            { id: 39, mod: 2, term: "Essentialisme", def: "Réduire une culture ou un peuple à des caractéristiques fixes et éternelles (critiqué par Said)." },
-            { id: 40, mod: 2, term: "Frantz Fanon", def: "Précurseur. Analyse la psychologie du colonisé et la nécessité de la violence pour la décolonisation." },
+            // MODULE 2
+            { id: 21, mod: 2, term: "Ernest Gellner", def: "Auteur de 'Nations and Nationalism'. Lie la nation à l'industrialisation." },
+            { id: 22, mod: 2, term: "Thèse de Gellner", def: "Le nationalisme crée la nation pour fournir une main-d'œuvre standardisée." },
+            { id: 23, mod: 2, term: "Benedict Anderson", def: "Auteur de 'Imagined Communities'. La nation est une construction mentale." },
+            { id: 24, mod: 2, term: "Communauté Imaginée", def: "On ne connaît pas tous les membres, mais on s'imagine unis." },
+            { id: 25, mod: 2, term: "Capitalisme de l'imprimé", def: "Journaux/Romans créent une temporalité commune (Anderson)." },
+            { id: 26, mod: 2, term: "Eric Hobsbawm", def: "Concept de 'Traditions Inventées' (ex: Kilt) pour légitimer l'État." },
+            { id: 27, mod: 2, term: "Edward Said", def: "Auteur de 'Orientalisme'. L'Orient est une fiction occidentale." },
+            { id: 28, mod: 2, term: "Orientalisme", def: "Discours construisant l'Orient comme irrationnel/sensuel vs Occident rationnel." },
+            { id: 29, mod: 2, term: "Gayatri Spivak", def: "'Can the Subaltern Speak?'. Critique des élites qui parlent pour les opprimés." },
+            { id: 30, mod: 2, term: "Subalterne", def: "Groupes marginalisés (paysans, femmes) exclus du récit dominant." },
+            { id: 31, mod: 2, term: "Homi Bhabha", def: "Concepts d'Hybridité et de Tiers-Espace." },
+            { id: 32, mod: 2, term: "Hybridité", def: "Les identités coloniales ne sont jamais pures, toujours négociées." },
+            { id: 33, mod: 2, term: "Mimétisme (Mimicry)", def: "Le colonisé imite le colon, créant une ressemblance menaçante (Bhabha)." },
+            { id: 34, mod: 2, term: "Haute Culture", def: "Culture lettrée imposée par l'école (Gellner)." },
+            { id: 35, mod: 2, term: "Monopole éducation", def: "Outil de l'État pour homogénéiser la nation." },
+            { id: 36, mod: 2, term: "Essentialisme", def: "Réduire une culture à des traits fixes (critiqué par Said)." },
+            { id: 37, mod: 2, term: "Frantz Fanon", def: "Psychologie du colonisé, nécessité de la violence décoloniale." },
+            { id: 38, mod: 2, term: "Recensement (Censo)", def: "Outil colonial pour classifier et figer les identités (Anderson)." },
+            { id: 39, mod: 2, term: "Musée", def: "Mise en scène du pouvoir colonial sur l'histoire (Anderson)." },
+            { id: 40, mod: 2, term: "Carte", def: "Découpage du territoire par le colonisateur." },
 
-            // MODULE 3 (20 cartes)
-            { id: 41, mod: 3, term: "Crise de 1973", def: "Choc pétrolier et fin des accords de Bretton-Woods. Marque la fin des Trente Glorieuses." },
-            { id: 42, mod: 3, term: "Néolibéralisme", def: "Idéologie dominante dès 1980 (Reagan/Thatcher). Dérégulation, privatisations, marché roi." },
-            { id: 43, mod: 3, term: "Margaret Thatcher", def: "PM britannique. Citation célèbre : 'There is no such thing as society', seulement des individus." },
-            { id: 44, mod: 3, term: "Méritocratie (Critique)", def: "Idéologie justifiant les inégalités par le talent individuel, masquant les déterminismes sociaux." },
-            { id: 45, mod: 3, term: "Responsabilité individuelle", def: "Concept clé néolibéral : l'échec (chômage, pauvreté) est une faute personnelle, pas structurelle." },
-            { id: 46, mod: 3, term: "Angela McRobbie", def: "Sociologue féministe. Analyse l'instrumentalisation du féminisme par le néolibéralisme." },
-            { id: 47, mod: 3, term: "Top Girl", def: "Figure de la réussite féminine néolibérale : performante, sexy, consommatrice, individualiste." },
-            { id: 48, mod: 3, term: "Post-féminisme", def: "Idée (critiquée) que l'égalité est acquise et que le féminisme est désormais inutile ou ringard." },
-            { id: 49, mod: 3, term: "Francis Fukuyama", def: "Auteur de 'La Fin de l'Histoire' (1992). Prédit le triomphe final de la démocratie libérale." },
-            { id: 50, mod: 3, term: "La Fin de l'Histoire", def: "Thèse selon laquelle il n'y a plus d'alternative idéologique viable au capitalisme libéral." },
-            { id: 51, mod: 3, term: "Samuel Huntington", def: "Auteur du 'Choc des Civilisations' (1996). Vision culturaliste des conflits post-Guerre Froide." },
-            { id: 52, mod: 3, term: "Le Choc des Civilisations", def: "Théorie divisant le monde en blocs culturels (Occident, Islam, etc.) voués à s'affronter." },
-            { id: 53, mod: 3, term: "Islamophobie", def: "Forme de discrimination raciale/culturelle exacerbée par les théories d'Huntington après 2001." },
-            { id: 54, mod: 3, term: "Consensus de Washington", def: "Ensemble de mesures (austérité, ouverture des marchés) imposées aux pays du Sud par le FMI." },
-            { id: 55, mod: 3, term: "Délocalisation", def: "Transfert d'activités industrielles vers des pays à bas coût, affaiblissant la classe ouvrière du Nord." },
-            { id: 56, mod: 3, term: "Infotainment", def: "Mélange d'information et de divertissement. Appauvrissement du débat démocratique." },
-            { id: 57, mod: 3, term: "Insécurité", def: "Thème médiatique central utilisé pour justifier les politiques pénales et masquer la crise sociale." },
-            { id: 58, mod: 3, term: "Banlieue", def: "Espace stigmatisé dans le discours français, associé à l'échec de l'intégration et à la menace." },
-            { id: 59, mod: 3, term: "Émeutes de 2005", def: "Moment clé en France révélant les tensions raciales et sociales occultées par le modèle républicain." },
-            { id: 60, mod: 3, term: "Double peine (Femmes)", def: "Pour McRobbie : les femmes pauvres sont méprisées pour leur échec économique ET leur 'manque de féminité'." },
+            // MODULE 3
+            { id: 41, mod: 3, term: "Crise de 1973", def: "Choc pétrolier, fin Trente Glorieuses. Début du néolibéralisme." },
+            { id: 42, mod: 3, term: "Néolibéralisme", def: "Thatcher/Reagan. Dérégulation, primauté du marché." },
+            { id: 43, mod: 3, term: "Margaret Thatcher", def: "'There is no such thing as society'. Individualisme radical." },
+            { id: 44, mod: 3, term: "Méritocratie", def: "Justifie les inégalités par l'effort, masque les causes structurelles." },
+            { id: 45, mod: 3, term: "Angela McRobbie", def: "Critique de la 'Top Girl'. Féminisme instrumentalisé par le marché." },
+            { id: 46, mod: 3, term: "Top Girl", def: "Femme performante et consommatrice, symbole de réussite néolibérale." },
+            { id: 47, mod: 3, term: "Francis Fukuyama", def: "'La Fin de l'Histoire'. Triomphe définitif de la démocratie libérale." },
+            { id: 48, mod: 3, term: "Samuel Huntington", def: "'Le Choc des Civilisations'. Conflits culturels (Occident vs Islam)." },
+            { id: 49, mod: 3, term: "Islamophobie", def: "Discours raciste/culturel légitimé par le 'Choc des civilisations'." },
+            { id: 50, mod: 3, term: "Consensus de Washington", def: "Mesures d'austérité imposées aux pays du Sud (FMI)." },
+            { id: 51, mod: 3, term: "Responsabilité individuelle", def: "L'échec social est vu comme une faute personnelle." },
+            { id: 52, mod: 3, term: "Délocalisation", def: "Transfert d'usines vers le Sud, précarisation au Nord." },
+            { id: 53, mod: 3, term: "Infotainment", def: "Information + Divertissement. Appauvrissement démocratique." },
+            { id: 54, mod: 3, term: "Insécurité", def: "Thème médiatique masquant la question sociale." },
+            { id: 55, mod: 3, term: "Banlieue", def: "Espace stigmatisé, symbole de l'échec de l'intégration." },
+            { id: 56, mod: 3, term: "Émeutes 2005", def: "Révélateur des tensions raciales en France." },
+            { id: 57, mod: 3, term: "Post-féminisme", def: "Idée que l'égalité est acquise, féminisme jugé ringard." },
+            { id: 58, mod: 3, term: "Double peine (Femmes)", def: "Femmes pauvres méprisées pour échec éco + manque de féminité." },
+            { id: 59, mod: 3, term: "Dérégulation", def: "Suppression des règles protégeant le travail." },
+            { id: 60, mod: 3, term: "Fin de l'Histoire", def: "Thèse de Fukuyama : plus d'alternative au capitalisme." },
 
-            // MODULE 4 (20 cartes)
-            { id: 61, mod: 4, term: "Johan Huizinga", def: "Auteur de 'L'Automne du Moyen Âge'. Décrit une époque marquée par la peur et la violence." },
-            { id: 62, mod: 4, term: "1492", def: "Date charnière : Chute de Grenade (fin Reconquista), Expulsion des Juifs, Découverte de l'Amérique." },
-            { id: 63, mod: 4, term: "Limpieza de Sangre", def: "Statuts espagnols de 'Pureté de sang'. Première exclusion biologique (ancêtre du racisme moderne)." },
-            { id: 64, mod: 4, term: "Accumulation Primitive", def: "Concept de Marx. Le capitalisme naît de la violence : pillage colonial, esclavage, expropriation." },
-            { id: 65, mod: 4, term: "Controverse de Valladolid", def: "Débat de 1550. Las Casas défend les Indiens (ont une âme). Conséquence : légitimation de l'esclavage des Noirs." },
-            { id: 66, mod: 4, term: "Bartolomé de Las Casas", def: "Défenseur des Indiens à Valladolid. Propose de les remplacer par des esclaves africains." },
-            { id: 67, mod: 4, term: "Silvia Federici", def: "Auteure de 'Caliban et la Sorcière'. Lie la chasse aux sorcières à la montée du capitalisme." },
-            { id: 68, mod: 4, term: "Chasse aux sorcières", def: "Domestication des femmes en Europe pour contrôler la reproduction de la force de travail." },
-            { id: 69, mod: 4, term: "Sidney Mintz", def: "Anthropologue du sucre ('La douceur et le pouvoir'). Lie plantation esclave et usine anglaise." },
-            { id: 70, mod: 4, term: "Sucre (Rôle historique)", def: "Première commodité capitaliste de masse. Fournit l'énergie bon marché aux ouvriers européens." },
-            { id: 71, mod: 4, term: "Immanuel Wallerstein", def: "Théoricien du 'Système-Monde'. Division structurelle entre Centre et Périphérie." },
-            { id: 72, mod: 4, term: "Système-Monde", def: "Économie globale où le Centre accumule la richesse extraite de la Périphérie exploitée." },
-            { id: 73, mod: 4, term: "Eric Williams", def: "Auteur de 'Capitalisme et Esclavage'. Montre que les profits de la traite ont financé la Révolution industrielle." },
-            { id: 74, mod: 4, term: "Code Noir (1685)", def: "Texte juridique français régissant l'esclavage. Définit l'esclave comme un 'meuble'." },
-            { id: 75, mod: 4, term: "Commerce triangulaire", def: "Circuit économique atlantique : Europe (armes/tissus) -> Afrique (esclaves) -> Amérique (sucre/coton)." },
-            { id: 76, mod: 4, term: "Plantation", def: "Lieu de production colonial. Considéré par Mintz comme l'ancêtre de l'usine moderne (discipline, temps)." },
-            { id: 77, mod: 4, term: "Marrons", def: "Esclaves fugitifs ayant recréé des sociétés libres. Forme de résistance majeure." },
-            { id: 78, mod: 4, term: "Enclosures", def: "Privatisation des terres communes en Angleterre. Crée une masse de prolétaires pour l'industrie." },
-            { id: 79, mod: 4, term: "Biopouvoir (Foucault)", def: "Concept utile pour Federici : le pouvoir commence à gérer la vie, les corps et la population." },
-            { id: 80, mod: 4, term: "Racialisation", def: "Processus social par lequel des groupes sont assignés à une 'race' pour justifier leur domination." },
+            // MODULE 4
+            { id: 61, mod: 4, term: "Johan Huizinga", def: "'L'Automne du Moyen Âge'. Époque de peur et violence." },
+            { id: 62, mod: 4, term: "1492", def: "Chute de Grenade + Amérique. Début exclusion moderne." },
+            { id: 63, mod: 4, term: "Limpieza de Sangre", def: "Espagne. Exclusion biologique des Juifs/Musulmans convertis." },
+            { id: 64, mod: 4, term: "Accumulation Primitive", def: "Marx. Le capitalisme naît du pillage et de l'esclavage." },
+            { id: 65, mod: 4, term: "Valladolid (1550)", def: "Indiens ont une âme -> Légitime esclavage des Noirs." },
+            { id: 66, mod: 4, term: "Silvia Federici", def: "'Caliban et la Sorcière'. Chasse aux sorcières = contrôle des femmes." },
+            { id: 67, mod: 4, term: "Sidney Mintz", def: "'La douceur et le pouvoir'. Sucre esclave nourrit l'usine anglaise." },
+            { id: 68, mod: 4, term: "Immanuel Wallerstein", def: "Système-Monde : Centre (riche) vs Périphérie (exploitée)." },
+            { id: 69, mod: 4, term: "Code Noir (1685)", def: "Droit français définissant l'esclave comme un 'meuble'." },
+            { id: 70, mod: 4, term: "Commerce triangulaire", def: "Europe (armes) -> Afrique (esclaves) -> Amérique (produits)." },
+            { id: 71, mod: 4, term: "Plantation", def: "Ancêtre de l'usine moderne (discipline, monoculture)." },
+            { id: 72, mod: 4, term: "Marrons", def: "Esclaves fugitifs formant des communautés libres." },
+            { id: 73, mod: 4, term: "Las Casas", def: "Défenseur des Indiens, propose la traite africaine." },
+            { id: 74, mod: 4, term: "Enclosures", def: "Privatisation des terres en Angleterre, crée le prolétariat." },
+            { id: 75, mod: 4, term: "Biopouvoir", def: "Foucault. Gestion politique de la vie et des corps." },
+            { id: 76, mod: 4, term: "Racialisation", def: "Assignation d'un groupe à une race pour dominer." },
+            { id: 77, mod: 4, term: "Eric Williams", def: "Profits de l'esclavage ont financé la Révolution Industrielle." },
+            { id: 78, mod: 4, term: "Sucre", def: "Première marchandise capitaliste de masse." },
+            { id: 79, mod: 4, term: "Chasse aux sorcières", def: "XVe-XVIIe. Destruction du pouvoir féminin." },
+            { id: 80, mod: 4, term: "Système-Monde", def: "Économie globale hiérarchisée née de la colonisation." },
 
-            // MODULE 5 (20 cartes)
-            { id: 81, mod: 5, term: "Carl von Linné", def: "Naturaliste suédois. Crée une taxonomie humaine hiérarchisée mêlant physique et moral." },
-            { id: 82, mod: 5, term: "Classification de Linné", def: "Associe Européens à l'intelligence/loi et Africains à la paresse/caprice." },
-            { id: 83, mod: 5, term: "Georges-Louis Leclerc de Buffon", def: "Naturaliste français. Théorie de la dégénérescence des espèces selon le climat." },
-            { id: 84, mod: 5, term: "Théorie de la dégénérescence", def: "Idée que l'homme blanc est le modèle original et les autres races des versions dégradées." },
-            { id: 85, mod: 5, term: "Arthur de Gobineau", def: "Auteur de l'Essai sur l'inégalité des races humaines (1853). Père du racisme 'pessimiste'." },
-            { id: 86, mod: 5, term: "Peur du Métissage", def: "Obsession de Gobineau. Pour lui, le mélange des sangs entraîne la mort inévitable des civilisations." },
-            { id: 87, mod: 5, term: "Polygénisme", def: "Théorie (fausse) selon laquelle les races humaines auraient des origines distinctes (espèces différentes)." },
-            { id: 88, mod: 5, term: "Monogénisme", def: "Théorie (biblique/Buffon) d'une origine unique, mais avec dégénérescence ultérieure." },
-            { id: 89, mod: 5, term: "Elsa Dorlin", def: "Philosophe (La Matrice de la Race). Analyse la nation comme un corps sexué et racialisé." },
-            { id: 90, mod: 5, term: "La Mère de la Nation", def: "Rôle assigné aux femmes blanches : reproduire le corps national sain et pur." },
-            { id: 91, mod: 5, term: "Médicalisation du racisme", def: "Au XIXe, le racisme emprunte le vocabulaire de la médecine (infection, hygiène, contagion)." },
-            { id: 92, mod: 5, term: "Craniométrie", def: "Pseudo-science du XIXe mesurant les crânes pour prouver l'infériorité intellectuelle des Noirs." },
-            { id: 93, mod: 5, term: "Lumières et Racisme", def: "Paradoxe : L'époque de la liberté (Voltaire, Kant) est aussi celle qui théorise la hiérarchie raciale." },
-            { id: 94, mod: 5, term: "Racisme sans race", def: "Forme contemporaine du racisme. Ne parle plus de biologie mais d'incompatibilité culturelle." },
-            { id: 95, mod: 5, term: "Différentialisme culturel", def: "Doctrine qui prône la séparation des cultures pour préserver leur 'identité' (néo-racisme)." },
-            { id: 96, mod: 5, term: "UNESCO (1950)", def: "Déclarations sur la race qui rejettent scientifiquement le racisme biologique après la 2GM." },
-            { id: 97, mod: 5, term: "Pierre-André Taguieff", def: "Sociologue ayant analysé le passage du racisme biologique au racisme culturel." },
-            { id: 98, mod: 5, term: "Colette Guillaumin", def: "Sociologue. Définit la race non comme un fait biologique mais comme un rapport social de pouvoir." },
-            { id: 99, mod: 5, term: "Naturalisation", def: "Processus idéologique consistant à faire passer un fait social (inégalité) pour un fait de nature." },
-            { id: 100, mod: 5, term: "Zoo humain", def: "Exhibitions coloniales populaires au XIXe/XXe siècle, illustrant le racisme scientifique et populaire." }
+            // MODULE 5
+            { id: 81, mod: 5, term: "Carl von Linné", def: "Classification humaine hiérarchisée (physique + moral)." },
+            { id: 82, mod: 5, term: "Buffon", def: "Théorie de la dégénérescence par le climat (Blanc = norme)." },
+            { id: 83, mod: 5, term: "Arthur de Gobineau", def: "'Essai sur l'inégalité des races'. Peur du métissage." },
+            { id: 84, mod: 5, term: "Métissage (Gobineau)", def: "Cause de la mort inévitable des civilisations." },
+            { id: 85, mod: 5, term: "Elsa Dorlin", def: "'La Matrice de la Race'. Nation = corps à protéger." },
+            { id: 86, mod: 5, term: "Mère de la Nation", def: "Femme blanche reproductrice de la race pure." },
+            { id: 87, mod: 5, term: "Racisme sans race", def: "Différentialisme culturel. Exclusion par la 'culture'." },
+            { id: 88, mod: 5, term: "Craniométrie", def: "Pseudo-science du XIXe mesurant les crânes." },
+            { id: 89, mod: 5, term: "Polygénisme", def: "Théorie d'origines distinctes des races (espèces différentes)." },
+            { id: 90, mod: 5, term: "Monogénisme", def: "Origine unique (Adam) mais dégénérescence (Buffon)." },
+            { id: 91, mod: 5, term: "Zoo humain", def: "Exhibitions coloniales populaires." },
+            { id: 92, mod: 5, term: "Médicalisation", def: "Vocabulaire de l'hygiène/infection appliqué à la race." },
+            { id: 93, mod: 5, term: "Lumières", def: "Paradoxe : Siècle de la liberté et du racisme scientifique." },
+            { id: 94, mod: 5, term: "Différentialisme", def: "Séparer les cultures pour 'préserver' l'identité." },
+            { id: 95, mod: 5, term: "UNESCO (1950)", def: "Rejet scientifique du racisme biologique." },
+            { id: 96, mod: 5, term: "Colette Guillaumin", def: "Race = rapport social de pouvoir, pas fait biologique." },
+            { id: 97, mod: 5, term: "Taguieff", def: "Analyse du néo-racisme culturel." },
+            { id: 98, mod: 5, term: "Naturalisation", def: "Rendre 'naturelle' une inégalité sociale." },
+            { id: 99, mod: 5, term: "Hottentote Venus", def: "Saartjie Baartman. Symbole de l'exhibition raciste." },
+            { id: 100, mod: 5, term: "Eugénisme", def: "Volonté d'améliorer la race par sélection." }
         ];
 
         const quizData = [
-            // MODULE 1 (10 questions)
-            { q: "Quelle distinction fondamentale Henry Sumner Maine établit-il ?", options: ["Statut vs Contrat", "Guerre vs Paix", "Nature vs Culture"], correct: 0, explanation: "Maine décrit le passage des sociétés traditionnelles (Statut) aux modernes (Contrat).", mod: 1 },
+             { q: "Quelle distinction fondamentale Henry Sumner Maine établit-il ?", options: ["Statut vs Contrat", "Guerre vs Paix", "Nature vs Culture"], correct: 0, explanation: "Maine décrit le passage des sociétés traditionnelles (Statut) aux modernes (Contrat).", mod: 1 },
             { q: "Selon Bachofen, quelle phase correspond au matriarcat ?", options: ["Tellurique", "Lunaire", "Solaire"], correct: 1, explanation: "La phase Lunaire, associée à l'agriculture et Déméter, est celle du droit maternel.", mod: 1 },
             { q: "Quel concept J.F. McLennan a-t-il introduit ?", options: ["Le mariage par amour", "Le mariage par capture", "La polygamie"], correct: 1, explanation: "Il voyait dans les rituels de mariage une survivance d'enlèvements réels.", mod: 1 },
             { q: "Quelle est l'alternative de Tylor ('Marry out or...') ?", options: ["Die out", "Stay out", "Fight out"], correct: 0, explanation: "'S'allier ou mourir'. L'exogamie est vitale pour la survie du groupe.", mod: 1 },
@@ -681,8 +838,6 @@
             { q: "Comment la nation moderne utilise-t-elle la parenté ?", options: ["Elle l'abolit", "Comme métaphore (Mère patrie)", "Elle la copie strictement"], correct: 1, explanation: "La nation utilise le vocabulaire familial pour créer de l'affect.", mod: 1 },
             { q: "Qui a écrit 'Ancient Law' (1861) ?", options: ["Tylor", "Maine", "Morgan"], correct: 1, explanation: "C'est l'œuvre majeure d'Henry Sumner Maine.", mod: 1 },
             { q: "Selon Bachofen, la phase tellurique est caractérisée par :", options: ["L'agriculture", "La promiscuité sexuelle", "La loi écrite"], correct: 1, explanation: "C'est la phase primitive, nomade, sans règles de mariage.", mod: 1 },
-
-            // MODULE 2 (10 questions)
             { q: "Pour Ernest Gellner, le nationalisme est un produit de :", options: ["La guerre", "L'industrialisation", "L'antiquité"], correct: 1, explanation: "L'industrie nécessite une culture homogène que seul l'État-nation peut fournir.", mod: 2 },
             { q: "Comment Anderson définit-il la nation ?", options: ["Communauté de sang", "Communauté imaginée", "Communauté divine"], correct: 1, explanation: "Imaginée car ses membres ne se connaissent pas tous physiquement.", mod: 2 },
             { q: "Quel facteur est clé pour Anderson ?", options: ["L'armée", "Le capitalisme de l'imprimé", "La religion"], correct: 1, explanation: "Journaux et romans créent une conscience et une temporalité communes.", mod: 2 },
@@ -693,8 +848,6 @@
             { q: "Pour Gellner, quel est l'outil principal du nationalisme ?", options: ["La guerre", "L'école", "La police"], correct: 1, explanation: "L'éducation nationale standardise la culture et la langue.", mod: 2 },
             { q: "Quelle notion Bhabha utilise-t-il pour décrire l'imitation coloniale ?", options: ["Mimicry", "Mockery", "Mastery"], correct: 0, explanation: "Le colonisé imite le colon, ce qui est à la fois flatteur et menaçant.", mod: 2 },
             { q: "Selon Said, l'Oriental est caractérisé comme :", options: ["Rationnel", "Féminin et sensuel", "Démocratique"], correct: 1, explanation: "Par opposition à l'Occidental masculin et rationnel.", mod: 2 },
-
-            // MODULE 3 (10 questions)
             { q: "Quelle crise marque le début du tournant néolibéral ?", options: ["1929", "1973", "2008"], correct: 1, explanation: "Le choc pétrolier et la fin de Bretton-Woods marquent la fin du compromis social.", mod: 3 },
             { q: "Quel concept Angela McRobbie critique-t-elle ?", options: ["La Top Girl", "La femme au foyer", "La militante"], correct: 0, explanation: "C'est la figure de la femme performante qui masque les inégalités structurelles.", mod: 3 },
             { q: "Quelle est la thèse de Fukuyama (1992) ?", options: ["Le choc des civilisations", "La fin de l'Histoire", "Le retour du communisme"], correct: 1, explanation: "Il prédit le triomphe universel de la démocratie libérale.", mod: 3 },
@@ -705,8 +858,6 @@
             { q: "Selon McRobbie, le féminisme est devenu :", options: ["Inutile", "Un outil du marché", "Une menace"], correct: 1, explanation: "Il est instrumentalisé pour promouvoir la consommation et la performance.", mod: 3 },
             { q: "La crise de 2008 a remis en cause :", options: ["Le communisme", "La dérégulation financière", "La démocratie"], correct: 1, explanation: "Elle a montré les limites du modèle néolibéral pur.", mod: 3 },
             { q: "Quel terme remplace souvent 'racisme' après 1980 ?", options: ["Insécurité", "Xénophobie", "Biologie"], correct: 0, explanation: "Le discours sur l'insécurité cible souvent les minorités sans les nommer.", mod: 3 },
-
-            // MODULE 4 (10 questions)
             { q: "Qu'est-ce que la 'Limpieza de Sangre' ?", options: ["Un rituel médical", "L'exclusion biologique en Espagne", "Une fête religieuse"], correct: 1, explanation: "Instaurée après 1492 pour exclure Juifs et Musulmans convertis.", mod: 4 },
             { q: "Selon Marx, d'où vient le capitalisme ?", options: ["De l'épargne", "De l'accumulation primitive", "De l'innovation"], correct: 1, explanation: "Pillage colonial, esclavage et expropriation des terres.", mod: 4 },
             { q: "Quel est l'enjeu de la Controverse de Valladolid (1550) ?", options: ["L'âme des Indiens", "La découverte de l'or", "La forme de la Terre"], correct: 0, explanation: "Décider si les Indiens sont humains. Las Casas gagne, mais cela justifie la traite des Noirs.", mod: 4 },
@@ -717,10 +868,8 @@
             { q: "Le Code Noir (1685) définit l'esclave comme :", options: ["Un humain mineur", "Un meuble", "Un citoyen"], correct: 1, explanation: "Une marchandise mobile qu'on peut vendre.", mod: 4 },
             { q: "Qu'est-ce que l'Accumulation Primitive implique ?", options: ["La paix", "La violence", "Le commerce équitable"], correct: 1, explanation: "C'est un processus violent de séparation des producteurs de leurs moyens de production.", mod: 4 },
             { q: "Selon Huizinga, le Moyen Âge tardif est marqué par :", options: ["L'optimisme", "La peur et la violence", "La science"], correct: 1, explanation: "Un climat d'angoisse qui prépare le terrain aux exclusions modernes.", mod: 4 },
-
-            // MODULE 5 (10 questions)
             { q: "Comment Linné classe-t-il les humains ?", options: ["Par taille", "Par mélange physique/moral", "Par langue"], correct: 1, explanation: "Il attribue des traits moraux (paresse, ingéniosité) aux traits physiques.", mod: 5 },
-            { q: "Quelle est l'obsession de Gobineau ?", options: ["La guerre", "Le métissage", "L'argent"], correct: 1, explanation: "Il pense que le mélange des races entraîne la mort des civilisations.", mod: 5 },
+            { q: "Quelle est l'obsession de Gobineau ?", options: ["La guerre", "Le métissage", "L'argent"], correct: 1, explanation: "Il pense que le mélange des sangs entraîne la mort des civilisations.", mod: 5 },
             { q: "Selon Buffon, pourquoi les races diffèrent-elles ?", options: ["Génétique", "Climat (dégénérescence)", "Volonté divine"], correct: 1, explanation: "Le Blanc est la norme, les autres ont 'dégénéré' à cause du climat.", mod: 5 },
             { q: "Pour Elsa Dorlin, la nation est vue comme :", options: ["Un contrat", "Un corps à protéger", "Une entreprise"], correct: 1, explanation: "Un corps biologique dont il faut préserver la pureté via les femmes.", mod: 5 },
             { q: "Qu'est-ce que le 'racisme sans race' ?", options: ["La fin du racisme", "Le racisme culturel", "Le racisme légal"], correct: 1, explanation: "On remplace la biologie par la culture ('incompatibilité') pour exclure.", mod: 5 },
@@ -731,71 +880,106 @@
             { q: "Après 1945, quel concept remplace souvent la 'race' ?", options: ["L'ethnie / La culture", "La classe", "Le genre"], correct: 0, explanation: "Permet de maintenir les hiérarchies sans utiliser le mot tabou.", mod: 5 }
         ];
 
-        // --- FUNCTIONS ---
+        // --- GLOBAL VARIABLES ---
+        let activeDeck = [];
+        let currentCardIndex = 0;
 
+        // --- NAVIGATION TABS ---
         function switchTab(tabId, navElement) {
-            // Hide all containers
             document.querySelectorAll('.container').forEach(el => el.classList.remove('active'));
-            // Show target
             document.getElementById(tabId).classList.add('active');
             
-            // Update nav
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             navElement.classList.add('active');
             
-            // Scroll top
             window.scrollTo(0,0);
         }
 
-        function renderFlashcards(filterMod) {
-            const grid = document.getElementById('flashcard-grid');
-            grid.innerHTML = '';
+        // --- THEME TOGGLE ---
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        // --- FLASHCARDS LOGIC ---
+        function startDeck(mod) {
+            // Filter cards
+            if (mod === 'all') {
+                activeDeck = flashcardsData;
+            } else {
+                activeDeck = flashcardsData.filter(card => card.mod === mod);
+            }
             
-            const filtered = filterMod === 'all' 
-                ? flashcardsData 
-                : flashcardsData.filter(f => f.mod === filterMod);
+            // Randomize order (optional, good for learning)
+            activeDeck = activeDeck.sort(() => Math.random() - 0.5);
 
-            filtered.forEach(card => {
-                const el = document.createElement('div');
-                el.className = `flashcard-container`;
-                el.innerHTML = `
-                    <div class="flashcard-inner">
-                        <div class="flashcard-front border-mod${card.mod}" style="border-left: 5px solid var(--mod${card.mod})">
-                            <span class="tag tag-mod${card.mod}">Mod ${card.mod}</span>
-                            <div class="flashcard-term">${card.term}</div>
-                            <div style="font-size:0.8rem; color:#7f8c8d; margin-top:10px;">(Tap to flip)</div>
-                        </div>
-                        <div class="flashcard-back" style="background-color: var(--mod${card.mod})">
-                            <div class="flashcard-def">${card.def}</div>
-                        </div>
-                    </div>
-                `;
-                el.onclick = function() {
-                    this.classList.toggle('flipped');
-                };
-                grid.appendChild(el);
-            });
+            // Reset state
+            currentCardIndex = 0;
+            
+            // UI Switch
+            document.getElementById('deck-selection').style.display = 'none';
+            document.getElementById('flashcard-player').style.display = 'flex';
+            
+            showCard(0);
         }
 
-        function filterFlashcards(mod) {
-            renderFlashcards(mod);
-            // Update buttons visual state
-            document.querySelectorAll('#flashcard-filters .filter-btn').forEach(btn => btn.classList.remove('active'));
-            // This is a simplified active state logic
-            event.target.classList.add('active');
+        function closeDeck() {
+            document.getElementById('flashcard-player').style.display = 'none';
+            document.getElementById('deck-selection').style.display = 'grid';
         }
 
-        function renderQuiz(filterMod) {
+        function showCard(index) {
+            const inner = document.getElementById('card-inner');
+            const card = activeDeck[index];
+            
+            // Reset flip state
+            inner.classList.remove('is-flipped');
+
+            // Wait small amount for flip reset before changing content if needed, 
+            // but immediate is usually fine if we are not animating transition between cards 
+            // other than the data update.
+            
+            // Update content
+            document.getElementById('fc-tag').className = `tag tag-mod${card.mod}`;
+            document.getElementById('fc-tag').innerText = `Mod ${card.mod}`;
+            document.getElementById('fc-term').innerText = card.term;
+            document.getElementById('fc-def').innerText = card.def;
+            
+            // Update color back
+            const backFace = document.querySelector('.flashcard-back');
+            const colorVar = `var(--mod${card.mod})`;
+            backFace.style.borderTopColor = colorVar;
+
+            // Update Progress
+            document.getElementById('fc-progress').innerText = `${index + 1} / ${activeDeck.length}`;
+        }
+
+        function flipCard() {
+            document.getElementById('card-inner').classList.toggle('is-flipped');
+        }
+
+        function nextCard() {
+            if (currentCardIndex < activeDeck.length - 1) {
+                currentCardIndex++;
+                showCard(currentCardIndex);
+            }
+        }
+
+        function prevCard() {
+            if (currentCardIndex > 0) {
+                currentCardIndex--;
+                showCard(currentCardIndex);
+            }
+        }
+
+        // --- QCM LOGIC ---
+        function renderQuiz() {
             const list = document.getElementById('quiz-list');
             list.innerHTML = '';
 
-            const filtered = filterMod === 'all' 
-                ? quizData 
-                : quizData.filter(q => q.mod === filterMod);
-
-            filtered.forEach((item, index) => {
+            quizData.forEach((item, index) => {
                 const card = document.createElement('div');
-                card.className = 'quiz-card';
+                card.className = 'quiz-card border-mod' + item.mod;
+                card.style.borderLeft = `5px solid var(--mod${item.mod})`;
                 card.innerHTML = `
                     <span class="tag tag-mod${item.mod}">Mod ${item.mod}</span>
                     <div class="quiz-question">${index + 1}. ${item.q}</div>
@@ -810,37 +994,30 @@
             });
         }
 
-        function filterQuiz(mod) {
-            renderQuiz(mod);
-            document.querySelectorAll('#quiz-filters .filter-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-        }
-
         function checkAnswer(optionDiv, selectedIndex, correctIndex, explanation) {
             const parent = optionDiv.parentElement;
             const feedback = parent.nextElementSibling;
             
-            // Disable clicks
+            // Disable interactions
             Array.from(parent.children).forEach(child => child.onclick = null);
 
             if (selectedIndex === correctIndex) {
                 optionDiv.classList.add('correct');
                 feedback.innerHTML = `<strong>Correct !</strong> ${explanation}`;
-                feedback.style.color = "#155724";
-                feedback.style.backgroundColor = "#d4edda";
+                feedback.style.color = "#27ae60"; // Green
+                feedback.style.borderLeftColor = "#2ecc71";
             } else {
                 optionDiv.classList.add('wrong');
                 parent.children[correctIndex].classList.add('correct');
                 feedback.innerHTML = `<strong>Faux.</strong> ${explanation}`;
-                feedback.style.color = "#721c24";
-                feedback.style.backgroundColor = "#f8d7da";
+                feedback.style.color = "#c0392b"; // Red
+                feedback.style.borderLeftColor = "#e74c3c";
             }
             feedback.style.display = 'block';
         }
 
         // INIT
-        renderFlashcards('all');
-        renderQuiz('all');
+        renderQuiz();
 
     </script>
 </body>
